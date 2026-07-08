@@ -9,8 +9,7 @@
 #'
 #' @importFrom dplyr distinct filter select
 #' @importFrom tidyr unite
-#' @importFrom shiny h3 isTruthy moduleServer NS observeEvent reactive reactiveVal
-#'             renderText renderUI req selectInput shinyApp tagList
+#' @importFrom shiny h3 isTruthy moduleServer NS observeEvent reactive reactiveVal renderText renderUI req selectInput shinyApp tagList
 #' @importFrom DT dataTableOutput renderDataTable
 #' @importFrom rlang .data
 #' @importFrom foundr bestcor summary_bestcor

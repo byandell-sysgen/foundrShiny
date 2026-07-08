@@ -5,9 +5,7 @@
 #' @param customSettings list of custom settings
 #'
 #' @return reactive object 
-#' @importFrom shiny column fluidRow h3 moduleServer NS observeEvent reactive
-#'             reactiveVal reactiveValues renderUI req selectInput tagList
-#'             uiOutput updateSelectInput
+#' @importFrom shiny column fluidRow h3 moduleServer NS observeEvent reactive reactiveVal reactiveValues renderUI req selectInput tagList uiOutput updateSelectInput
 #' @importFrom DT renderDataTable
 #' @importFrom stringr str_remove str_replace
 #' @importFrom foundr is_bestcor summary_bestcor summary_strainstats

@@ -7,9 +7,7 @@
 #' @param facet facet on `strain` if `TRUE`
 #' @return reactive object for `statsOutput`
 #' 
-#' @importFrom shiny column fluidRow moduleServer NS observeEvent plotOutput
-#'             reactive renderPlot renderUI req selectInput selectizeInput
-#'             sliderInput tagList uiOutput updateSelectInput
+#' @importFrom shiny column fluidRow moduleServer NS observeEvent plotOutput reactive renderPlot renderUI req selectInput selectizeInput sliderInput tagList uiOutput updateSelectInput
 #' @importFrom plotly plotlyOutput ggplotly renderPlotly
 #' @importFrom ggplot2 ylim
 #' @importFrom rlang .data

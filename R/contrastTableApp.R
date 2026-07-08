@@ -7,9 +7,7 @@
 #' @param keepDatatraits keep datatraits if not `NULL`
 #' @return reactive object 
 #'
-#' @importFrom shiny column moduleServer NS observeEvent
-#'             reactive renderUI req selectInput tagList uiOutput
-#'             updateSelectInput
+#' @importFrom shiny column moduleServer NS observeEvent reactive renderUI req selectInput tagList uiOutput updateSelectInput
 #' @importFrom DT renderDataTable
 #' @importFrom foundr conditionContrasts
 #' @export

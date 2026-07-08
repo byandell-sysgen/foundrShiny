@@ -1,6 +1,5 @@
 #'
-#' @importFrom dplyr across arrange as_tibble bind_rows everything filter
-#'             left_join mutate rename select
+#' @importFrom dplyr across arrange as_tibble bind_rows everything filter left_join mutate rename select
 #' @importFrom rlang .data
 #' @importFrom stringr str_remove
 #' @importFrom tidyr separate_wider_delim unite

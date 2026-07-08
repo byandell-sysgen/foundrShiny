@@ -7,8 +7,7 @@
 #' @param customSettings static list of settings
 #' @return reactive object
 #'
-#' @importFrom shiny h3 isTruthy moduleServer NS plotOutput reactive renderUI
-#'             renderPlot req tagList selectInput uiOutput 
+#' @importFrom shiny h3 isTruthy moduleServer NS plotOutput reactive renderUI renderPlot req tagList selectInput uiOutput
 #' @importFrom foundr ggplot_bestcor
 #' @export
 corPlotApp <- function() {

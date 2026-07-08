@@ -6,9 +6,8 @@
 #' @param download_list reactiveValues with  postfix,plotObject,tableObject
 #' @return nothing 
 #'
-#' @importFrom shiny column downloadButton downloadHandler fluidRow
-#'             moduleServer NS renderUI req textAreaInput uiOutput
-#' @importFrom utils write.csv    
+#' @importFrom shiny column downloadButton downloadHandler fluidRow moduleServer NS renderUI req textAreaInput uiOutput
+#' @importFrom utils write.csv
 #' @importFrom grDevices dev.off pdf
 #' @export
 downloadApp <- function(id) {

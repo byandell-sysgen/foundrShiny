@@ -7,8 +7,7 @@
 #' @param customSettings list of custom settings
 #' @return reactive object 
 #'
-#' @importFrom shiny h3 moduleServer NS reactive renderPlot renderUI req
-#'             selectizeInput tagList uiOutput updateSelectizeInput
+#' @importFrom shiny h3 moduleServer NS reactive renderPlot renderUI req selectizeInput tagList uiOutput updateSelectizeInput
 #' @importFrom stringr str_to_title
 #' @export
 contrastGroupApp <- function() {

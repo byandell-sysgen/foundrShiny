@@ -6,8 +6,7 @@
 #' @param customSettings list of custom settings
 #'
 #' @return reactive object 
-#' @importFrom shiny column fluidRow h3 isTruthy moduleServer NS radioButtons
-#'             reactive reactiveVal renderText renderUI tagList uiOutput
+#' @importFrom shiny column fluidRow h3 isTruthy moduleServer NS radioButtons reactive reactiveVal renderText renderUI tagList uiOutput
 #' @importFrom stringr str_to_title
 #' @export
 contrastApp <- function() {

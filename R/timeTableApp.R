@@ -5,9 +5,7 @@
 #' @param traitData,traitSignal,traitStats static objects
 #' @return nothing returned
 #'
-#' @importFrom shiny column fluidRow h3 observeEvent moduleServer NS plotOutput
-#'             reactive reactiveVal renderPlot renderUI req selectInput
-#'             selectizeInput tagList uiOutput updateSelectizeInput
+#' @importFrom shiny column fluidRow h3 observeEvent moduleServer NS plotOutput reactive reactiveVal renderPlot renderUI req selectInput selectizeInput tagList uiOutput updateSelectizeInput
 #' @importFrom shiny column fluidRow NS
 #' @importFrom foundr timetraitsall traitTimes
 #' @importFrom DT renderDataTable

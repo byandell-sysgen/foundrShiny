@@ -7,8 +7,7 @@
 #' @param trait_table reactive objects from `foundrServer`
 #' @return reactive object for `traitSolos`
 #' 
-#' @importFrom shiny isTruthy moduleServer observeEvent NS plotOutput radioButtons 
-#'             reactive renderPlot renderUI req tagList uiOutput
+#' @importFrom shiny isTruthy moduleServer observeEvent NS plotOutput radioButtons reactive renderPlot renderUI req tagList uiOutput
 #' @importFrom DT renderDataTable dataTableOutput
 #' @importFrom foundr ggplot_traitPairs traitPairs
 #' @importFrom dplyr distinct filter

@@ -7,8 +7,7 @@
 #' @param traitData,traitSignal static objects 
 #' @return reactive object
 #' 
-#' @importFrom shiny h3 moduleServer NS radioButtons reactive reactiveVal
-#'             renderUI req tagList uiOutput
+#' @importFrom shiny h3 moduleServer NS radioButtons reactive reactiveVal renderUI req tagList uiOutput
 #' @importFrom DT dataTableOutput renderDataTable
 #' @importFrom foundr subset_trait_names traitSolos unite_datatraits
 #' @importFrom utils write.csv

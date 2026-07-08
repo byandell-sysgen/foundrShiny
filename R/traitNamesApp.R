@@ -11,8 +11,7 @@
 #' @param multiples fixed logical for multiple trait names
 #' @return reactive vector of trait names
 #' 
-#' @importFrom shiny moduleServer NS observeEvent reactive req
-#'             selectizeInput uiOutput updateSelectizeInput
+#' @importFrom shiny moduleServer NS observeEvent reactive req selectizeInput uiOutput updateSelectizeInput
 #' @importFrom DT renderDataTable
 #' @importFrom dplyr distinct
 #' @importFrom rlang .data

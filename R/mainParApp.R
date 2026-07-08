@@ -4,9 +4,7 @@
 #' @param traitStats static object
 #' @return reactive input
 #' 
-#' @importFrom shiny bootstrapPage h4 moduleServer NS observeEvent radioButtons
-#'             reactiveVal reactiveValues renderUI req selectInput shinyApp
-#'             sliderInput uiOutput
+#' @importFrom shiny bootstrapPage h4 moduleServer NS observeEvent radioButtons reactiveVal reactiveValues renderUI req selectInput shinyApp sliderInput uiOutput
 #' @export
 mainParApp <- function() {
   ui <- shiny::bootstrapPage(

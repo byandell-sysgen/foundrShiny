@@ -4,9 +4,7 @@
 #' @param customSettings list of custom settings
 #' @return reactive server
 #' 
-#' @importFrom shiny checkboxGroupInput checkboxInput debounce hideTab h4
-#'             isTruthy observeEvent passwordInput reactive renderUI
-#'             req showTab sliderInput
+#' @importFrom shiny checkboxGroupInput checkboxInput debounce hideTab h4 isTruthy observeEvent passwordInput reactive renderUI req showTab sliderInput
 #' @importFrom grDevices dev.off pdf
 #' @importFrom utils write.csv
 #' @importFrom foundr timetraitsall

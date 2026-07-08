@@ -6,8 +6,7 @@
 #' @param trait_table reactive objects from `server`
 #' @return reactive object
 #' 
-#' @importFrom shiny moduleServer NS observeEvent plotOutput radioButtons reactive 
-#'             renderPlot renderUI req tagList uiOutput
+#' @importFrom shiny moduleServer NS observeEvent plotOutput radioButtons reactive renderPlot renderUI req tagList uiOutput
 #' @importFrom DT renderDataTable dataTableOutput
 #' @importFrom foundr ggplot_traitSolos
 #' @export

@@ -7,10 +7,7 @@
 #' @param responses possible types of responses
 #' @return nothing returned
 #'
-#' @importFrom shiny column fluidRow h3 moduleServer NS observeEvent plotOutput
-#'             radioButtons reactive reactiveVal reactiveValues renderPlot
-#'             renderUI req selectInput selectizeInput tagList uiOutput
-#'             updateSelectizeInput
+#' @importFrom shiny column fluidRow h3 moduleServer NS observeEvent plotOutput radioButtons reactive reactiveVal reactiveValues renderPlot renderUI req selectInput selectizeInput tagList uiOutput updateSelectizeInput
 #' @importFrom DT renderDataTable
 #' @importFrom stringr str_remove str_replace_all
 #' @importFrom foundr ggplot_traitTimes timetraitsall

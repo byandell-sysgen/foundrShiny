@@ -6,9 +6,7 @@
 #' @param customSettings list of custom settings
 #' @return reactive object 
 #'
-#' @importFrom shiny column fluidRow moduleServer NS observeEvent
-#'             reactive renderUI req selectInput tagList uiOutput
-#'             updateSelectInput
+#' @importFrom shiny column fluidRow moduleServer NS observeEvent reactive renderUI req selectInput tagList uiOutput updateSelectInput
 #' @importFrom DT renderDataTable
 #' @export
 contrastTraitApp <- function() {

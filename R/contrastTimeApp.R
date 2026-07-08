@@ -6,8 +6,7 @@
 #' @param customSettings list of custom settings
 #' @return reactive object 
 #'
-#' @importFrom shiny h3 isTruthy moduleServer NS reactive renderText renderUI
-#'             tagList
+#' @importFrom shiny h3 isTruthy moduleServer NS reactive renderText renderUI tagList
 #' @importFrom stringr str_to_title
 #' @export
 contrastTimeApp <- function() {

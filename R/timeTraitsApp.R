@@ -7,9 +7,7 @@
 #' @param responses possible types of responses
 #' @return nothing returned
 #'
-#' @importFrom shiny column fluidRow h3 observeEvent moduleServer NS plotOutput
-#'             radioButtons reactive reactiveValues renderPlot renderUI req
-#'             selectInput selectizeInput tagList uiOutput updateSelectizeInput
+#' @importFrom shiny column fluidRow h3 observeEvent moduleServer NS plotOutput radioButtons reactive reactiveValues renderPlot renderUI req selectInput selectizeInput tagList uiOutput updateSelectizeInput
 #' @importFrom DT renderDataTable
 #' @importFrom foundr timetraits timetraitsall
 #' @export

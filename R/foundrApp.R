@@ -4,8 +4,7 @@
 #' @param traitData,traitSignal,traitStats,traitModule static objects
 #' @param customSettings list of custom settings
 #' 
-#' @importFrom shiny fluidPage mainPanel moduleServer NS reactive renderUI req
-#'             sidebarLayout sidebarPanel uiOutput
+#' @importFrom shiny fluidPage mainPanel moduleServer NS reactive renderUI req sidebarLayout sidebarPanel uiOutput
 #' @export
 foundrApp <- function() {
   ui <- shiny::fluidPage(

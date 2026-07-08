@@ -7,8 +7,7 @@
 #' @param entry reactive entry flag (1 = no show, 2 = show)
 #' @return reactive server
 #' 
-#' @importFrom shiny checkboxGroupInput hideTab observeEvent reactive
-#'             reactiveVal reactiveValues renderUI req showTab updateTabsetPanel
+#' @importFrom shiny checkboxGroupInput hideTab observeEvent reactive reactiveVal reactiveValues renderUI req showTab updateTabsetPanel
 #' @importFrom grDevices dev.off pdf
 #' @importFrom utils write.csv
 #' @export

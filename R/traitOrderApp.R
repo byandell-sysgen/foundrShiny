@@ -7,9 +7,7 @@
 #' @param keepDatatraits keep datatraits if not `NULL`
 #' @return reactive object
 #'
-#' @importFrom shiny column fluidRow h3 isTruthy moduleServer NS observeEvent
-#'             reactive  reactiveVal renderUI req selectInput shinyApp tagList
-#'             uiOutput updateSelectInput
+#' @importFrom shiny column fluidRow h3 isTruthy moduleServer NS observeEvent reactive  reactiveVal renderUI req selectInput shinyApp tagList uiOutput updateSelectInput
 #' @importFrom DT dataTableOutput renderDataTable
 #' @importFrom plotly plotlyOutput renderPlotly
 #' @importFrom foundr summary_strainstats

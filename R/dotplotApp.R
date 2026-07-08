@@ -6,12 +6,9 @@
 #' @param contrast_table reactive data frame
 #' @return reactive object 
 #'
-#' @importFrom shiny column fluidRow moduleServer NS observeEvent
-#'             radioButtons reactive reactiveVal reactiveValues renderUI
-#'             req selectInput tagList uiOutput updateSelectInput
+#' @importFrom shiny column fluidRow moduleServer NS observeEvent radioButtons reactive reactiveVal reactiveValues renderUI req selectInput tagList uiOutput updateSelectInput
 #' @importFrom DT renderDataTable
-#' @importFrom foundr ggplot_conditionContrasts summary_conditionContrasts
-#'             summary_strainstats
+#' @importFrom foundr ggplot_conditionContrasts summary_conditionContrasts summary_strainstats
 #' @export
 dotplotApp <- function() {
   title <- "Shiny DotPlot"

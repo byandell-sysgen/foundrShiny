@@ -6,9 +6,7 @@
 #' @param panel_name name of panel
 #' @return reactive input
 #' 
-#' @importFrom shiny bootstrapPage h4 moduleServer NS observeEvent radioButtons
-#'             reactiveVal reactiveValues renderUI req selectInput shinyApp
-#'             sliderInput uiOutput
+#' @importFrom shiny bootstrapPage h4 moduleServer NS observeEvent radioButtons reactiveVal reactiveValues renderUI req selectInput shinyApp sliderInput uiOutput
 #' @export
 panelParApp <- function() {
   ui <- shiny::bootstrapPage(

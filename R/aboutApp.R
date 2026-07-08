@@ -5,8 +5,7 @@
 #' @param entry entry logical flag
 #'
 #' @return reactive server
-#' @importFrom shiny a bootstrapPage br includeMarkdown isTruthy NS reactive
-#'             renderUI shinyApp strong uiOutput
+#' @importFrom shiny a bootstrapPage br includeMarkdown isTruthy NS reactive renderUI shinyApp strong uiOutput
 #' @export
 aboutApp <- function(id) {
   ui <- shiny::bootstrapPage(

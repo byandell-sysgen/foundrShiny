@@ -82,7 +82,7 @@ To avoid cluttering the `main` branch git history with hundreds of compiled HTML
 1. **Keep `docs/` in `.gitignore`**: Local `pkgdown::build_site()` builds remain untracked in your local workspace, keeping `main` clean (source files only).
 2. **Automated Deployment via [.github/workflows/pkgdown.yaml](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/.github/workflows/pkgdown.yaml)**:
    - On every `git push` to `main`, GitHub Actions runs `pkgdown::build_site()` in a cloud container.
-   - The workflow step `r-lib/actions/deploy-pkgdown@v2` commits the compiled site directly to an isolated, automated **`gh-pages`** branch.
+   - The workflow step `JamesIves/github-pages-deploy-action@v4` commits the compiled site directly to an isolated, automated **`gh-pages`** branch.
 3. **GitHub Pages Setting**:
    - On GitHub.com under **Settings** -> **Pages**:
      - Set **Source**: **Deploy from a branch**

@@ -37,4 +37,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         if: github.event_name != 'pull_request'
-        uses: r-lib/actions/deploy-pkgdown@v2
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: docs

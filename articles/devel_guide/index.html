@@ -116,27 +116,41 @@ objects.</p>
 hierarchically. Below is the complete visual reactivity calling
 flowchart across the top-level application, panel routers, parameter
 tiers, and analytical sub-modules.</p>
-<pre class="mermaid"><code>graph TD
-    classDef entry fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff;
-    classDef router fill:#ff7f0e,stroke:#333,stroke-width:2px,color:#fff;
-    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff;
-    classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff;
-    classDef submod fill:#9467bd,stroke:#333,stroke-width:2px,color:#fff;
-    classDef plot fill:#8c564b,stroke:#333,stroke-width:2px,color:#fff;
+<pre class="mermaid"><code>flowchart TD
+    foundrApp["foundrApp / foundrServer"]
+    entryServer["entryServer (Auth)"]
+    panelServer["panelServer (5-Tab Router)"]
 
-    foundrApp["foundrApp / foundrServer"]:::entry
-    entryServer["entryServer (Auth)"]:::entry
-    panelServer["panelServer (5-Tab Router)"]:::router
+    mainParServer["mainParServer (Global Parameters)"]
+    panelParServer["panelParServer (Panel Parameters)"]
+    plotParServer["plotParServer (Plot Parameters)"]
 
-    mainParServer["mainParServer (Global Parameters)"]:::param
-    panelParServer["panelParServer (Panel Parameters)"]:::param
-    plotParServer["plotParServer (Plot Parameters)"]:::param
+    traitServer["traitServer (Trait Panel)"]
+    contrastServer["contrastServer (Contrast Panel)"]
+    statsServer["statsServer (Stats Panel)"]
+    timeServer["timeServer (Time Panel)"]
+    aboutServer["aboutServer (About Panel)"]
 
-    traitServer["traitServer (Trait Panel)"]:::panel
-    contrastServer["contrastServer (Contrast Panel)"]:::panel
-    statsServer["statsServer (Stats Panel)"]:::panel
-    timeServer["timeServer (Time Panel)"]:::panel
-    aboutServer["aboutServer (About Panel)"]:::panel
+    corPlotApp["corPlotApp"]
+    corTableApp["corTableApp"]
+    traitNamesApp["traitNamesApp (x2)"]
+    traitOrderApp["traitOrderApp"]
+    traitPairsApp["traitPairsApp"]
+    traitSolosApp["traitSolosApp"]
+    traitTableApp["traitTableApp"]
+
+    contrastGroupApp["contrastGroupApp"]
+    contrastTimeApp["contrastTimeApp"]
+    contrastTableApp["contrastTableApp (x3)"]
+    contrastTraitApp["contrastTraitApp"]
+    timePlotApp["timePlotApp"]
+    contrastPlotApp["contrastPlotApp"]
+    timeTraitsApp["timeTraitsApp"]
+    timeTableApp["timeTableApp"]
+
+    biplotApp["biplotApp"]
+    dotplotApp["dotplotApp"]
+    volcanoApp["volcanoApp"]
 
     foundrApp --&gt; entryServer
     foundrApp --&gt; panelServer
@@ -150,31 +164,31 @@ tiers, and analytical sub-modules.</p>
 
     %% Trait Panel Sub-modules
     traitServer --&gt; panelParServer
-    traitServer --&gt; corPlotApp["corPlotApp"]:::submod
-    traitServer --&gt; corTableApp["corTableApp"]:::submod
-    traitServer --&gt; traitNamesApp["traitNamesApp (x2)"]:::submod
-    traitServer --&gt; traitOrderApp["traitOrderApp"]:::submod
-    traitServer --&gt; traitPairsApp["traitPairsApp"]:::submod
-    traitServer --&gt; traitSolosApp["traitSolosApp"]:::submod
-    traitServer --&gt; traitTableApp["traitTableApp"]:::submod
+    traitServer --&gt; corPlotApp
+    traitServer --&gt; corTableApp
+    traitServer --&gt; traitNamesApp
+    traitServer --&gt; traitOrderApp
+    traitServer --&gt; traitPairsApp
+    traitServer --&gt; traitSolosApp
+    traitServer --&gt; traitTableApp
 
     %% Contrast Panel Sub-modules
     contrastServer --&gt; panelParServer
-    contrastServer --&gt; contrastGroupApp["contrastGroupApp"]:::submod
-    contrastServer --&gt; contrastTimeApp["contrastTimeApp"]:::submod
-    contrastServer --&gt; contrastTableApp["contrastTableApp (x3)"]:::submod
-    contrastServer --&gt; contrastTraitApp["contrastTraitApp"]:::submod
-    contrastServer --&gt; timePlotApp["timePlotApp"]:::submod
+    contrastServer --&gt; contrastGroupApp
+    contrastServer --&gt; contrastTimeApp
+    contrastServer --&gt; contrastTableApp
+    contrastServer --&gt; contrastTraitApp
+    contrastServer --&gt; timePlotApp
 
-    contrastGroupApp --&gt; contrastPlotApp["contrastPlotApp"]:::submod
+    contrastGroupApp --&gt; contrastPlotApp
     contrastTableApp --&gt; traitOrderApp
-    contrastTimeApp --&gt; timeTraitsApp["timeTraitsApp"]:::submod
+    contrastTimeApp --&gt; timeTraitsApp
     contrastTraitApp --&gt; contrastPlotApp
 
     contrastPlotApp --&gt; plotParServer
-    contrastPlotApp --&gt; biplotApp["biplotApp"]:::plot
-    contrastPlotApp --&gt; dotplotApp["dotplotApp"]:::plot
-    contrastPlotApp --&gt; volcanoApp["volcanoApp"]:::plot
+    contrastPlotApp --&gt; biplotApp
+    contrastPlotApp --&gt; dotplotApp
+    contrastPlotApp --&gt; volcanoApp
 
     biplotApp --&gt; mainParServer
     biplotApp --&gt; panelParServer
@@ -188,10 +202,24 @@ tiers, and analytical sub-modules.</p>
     %% Time Panel Sub-modules
     timeServer --&gt; panelParServer
     timeServer --&gt; timePlotApp
-    timeServer --&gt; timeTableApp["timeTableApp"]:::submod
+    timeServer --&gt; timeTableApp
 
     timeTableApp --&gt; timeTraitsApp
-    timeTableApp --&gt; traitOrderApp</code></pre>
+    timeTableApp --&gt; traitOrderApp
+
+    classDef entry fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
+    classDef router fill:#ff7f0e,stroke:#333,stroke-width:2px,color:#fff
+    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
+    classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff
+    classDef submod fill:#9467bd,stroke:#333,stroke-width:2px,color:#fff
+    classDef plot fill:#8c564b,stroke:#333,stroke-width:2px,color:#fff
+
+    class foundrApp,entryServer entry
+    class panelServer router
+    class mainParServer,panelParServer,plotParServer param
+    class traitServer,contrastServer,statsServer,timeServer,aboutServer panel
+    class corPlotApp,corTableApp,traitNamesApp,traitOrderApp,traitPairsApp,traitSolosApp,traitTableApp,contrastGroupApp,contrastTimeApp,contrastTableApp,contrastTraitApp,timePlotApp,contrastPlotApp,timeTraitsApp,timeTableApp submod
+    class biplotApp,dotplotApp,volcanoApp plot</code></pre>
 <hr>
 </div>
 <div class="section level3">

@@ -25,17 +25,17 @@ navbar:
     right: [search, github]
   components:
     articles:
-      text: Articles
+      text: Guides
       menu:
         - text: "Developer Guide Overview & Architecture"
           href: articles/devel_guide/index.html
-        - text: "Module Index & Design Conventions"
+        - text: "  Module Index & Design Conventions"
           href: articles/devel_guide/modules.html
-        - text: "Data Pipeline & Parameter Reactivity"
+        - text: "  Data Pipeline & Parameter Reactivity"
           href: articles/devel_guide/data_flow.html
 
 articles:
-  - title: "Developer Documentation"
+  - title: "Developer Guides"
     contents:
       - "devel_guide/index"
       - "devel_guide/modules"

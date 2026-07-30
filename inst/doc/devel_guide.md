@@ -14,6 +14,7 @@ This document records the step-by-step process, prompts, blueprint references, d
 - Using `~/Documents/GitHub/Documentation/{prompts/devel_guide,github/pkgdown}.md` and
 `~/Documents/GitHub/Documentation/ShinyApps.md#foundrshiny-pragmatic-code-reuse-driven-by-collaborators`
 as blueprints, create `vignettes/devel_guide` complete with `mermaid` flowchart of modules.
+- Update `_pkgdown.yml` top navigation dropdown to `text: Guides` with indented developer guide subpages (`modules`, `data_flow`).
 
 ### Reference Blueprints Used
 
@@ -30,7 +31,7 @@ as blueprints, create `vignettes/devel_guide` complete with `mermaid` flowchart 
 
 ### Step 1: Root Reference File (`DEVELOPER.md`)
 
-Created [`DEVELOPER.md`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/DEVELOPER.md) in the project root to serve as an in-repo entry point detailing setup commands, the 5-function Shiny module design pattern, parameter scoping, runtime global data objects, and deployment guidelines.
+Created [`DEVELOPER.md`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/DEVELOPER.md) in the project root to serve as an in-repo entry point detailing setup commands, the 5-function Shiny module design pattern, parameter scoping, runtime global data objects, explicit package import conventions, and deployment guidelines.
 
 ### Step 2: Architectural Analysis & Code Audit
 
@@ -40,7 +41,7 @@ Inspected `R/*.R` source files and package namespace dependencies:
 - Added `stats::biplot` import in [`R/biplotApp.R`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/R/biplotApp.R).
 - Added `globalVariables()` declarations in [`R/foundr_helpers.R`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/R/foundr_helpers.R) to resolve R CMD check warnings for non-standard evaluation variables and global app objects.
 
-### Step 3: Creation of `vignettes/devel_guide/` Suite
+### Step 3: Creation of `vignettes/devel_guide/` Suite & Vignette Setup
 
 Created a 3-part R Markdown article suite under `vignettes/devel_guide/`:
 
@@ -50,14 +51,17 @@ Created a 3-part R Markdown article suite under `vignettes/devel_guide/`:
   - 5-function Shiny module design pattern documentation and exhaustive 8-category breakdown of all ~30 package modules.
 - **[`vignettes/devel_guide/data_flow.Rmd`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/vignettes/devel_guide/data_flow.Rmd)**:
   - Details on `foundrSetup()`, global runtime data objects (`traitData`, `traitSignal`, `traitStats`, `traitModule`, `customSettings`), three-tier reactive parameter scoping (`main_par`, `panel_par`, `plot_par`), and unit testing with `*App()` test functions.
+- **Obsolete `vignettes/foundrShiny.Rmd` Integration**:
+  - Reviewed legacy `vignettes/foundrShiny.Rmd` file moved from `../foundr`.
+  - Merged salvageable insights (WGCNA vs. Shiny module terminology distinction in `modules.Rmd` and parameter persistence/scoping notes in `data_flow.Rmd`) into `vignettes/devel_guide/`.
 
-### Step 4: `_pkgdown.yml` & Mermaid.js Integration
+### Step 4: `_pkgdown.yml` & Navigation Design
 
 Created [`_pkgdown.yml`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/_pkgdown.yml) in package root:
 
-- Configured Bootstrap 5 theme.
-- Added Mermaid.js CDN script injection in `template.includes.in_header` to automatically render `mermaid` flowcharts on `pkgdown` site pages.
-- Grouped developer articles under `"devel_guide/index"`, `"devel_guide/modules"`, and `"devel_guide/data_flow"`.
+- Configured Bootstrap 5 theme with Mermaid.js CDN script injection in `template.includes.in_header`.
+- Set top navigation dropdown component to `text: Guides` matching `qtl2shiny`.
+- Indented developer guide subpages (`modules`, `data_flow`) under the master index in the navbar menu dropdown.
 - Ensured all `.Rmd` vignettes under `vignettes/` are indexed under `articles:` to prevent `pkgdown` missing vignette build errors.
 
 ### Step 5: `.Rbuildignore` & `.nojekyll` Setup
@@ -89,10 +93,6 @@ To avoid cluttering the `main` branch git history with hundreds of compiled HTML
      - Set **Source**: **Deploy from a branch**
      - Set **Branch**: **`gh-pages`** / **`/ (root)`**
      - Click **Save**
-
-> [!NOTE]
-> **Why `jekyll-build-pages` failed previously**:
-> GitHub's default Jekyll builder tried to build from `source: ./docs` on `main`. Because `docs/` was in `.gitignore` (and not pushed to `main`), the runner found no `./docs` folder. Deploying via GitHub Actions to the `gh-pages` branch resolves this completely without committing HTML files to `main`.
 
 ---
 

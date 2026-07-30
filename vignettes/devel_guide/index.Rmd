@@ -37,27 +37,41 @@ Related packages in the ecosystem:
 The package contains ~30 interconnected Shiny modules organized hierarchically. Below is the complete visual reactivity calling flowchart across the top-level application, panel routers, parameter tiers, and analytical sub-modules.
 
 ```mermaid
-graph TD
-    classDef entry fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff;
-    classDef router fill:#ff7f0e,stroke:#333,stroke-width:2px,color:#fff;
-    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff;
-    classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff;
-    classDef submod fill:#9467bd,stroke:#333,stroke-width:2px,color:#fff;
-    classDef plot fill:#8c564b,stroke:#333,stroke-width:2px,color:#fff;
+flowchart TD
+    foundrApp["foundrApp / foundrServer"]
+    entryServer["entryServer (Auth)"]
+    panelServer["panelServer (5-Tab Router)"]
 
-    foundrApp["foundrApp / foundrServer"]:::entry
-    entryServer["entryServer (Auth)"]:::entry
-    panelServer["panelServer (5-Tab Router)"]:::router
+    mainParServer["mainParServer (Global Parameters)"]
+    panelParServer["panelParServer (Panel Parameters)"]
+    plotParServer["plotParServer (Plot Parameters)"]
 
-    mainParServer["mainParServer (Global Parameters)"]:::param
-    panelParServer["panelParServer (Panel Parameters)"]:::param
-    plotParServer["plotParServer (Plot Parameters)"]:::param
+    traitServer["traitServer (Trait Panel)"]
+    contrastServer["contrastServer (Contrast Panel)"]
+    statsServer["statsServer (Stats Panel)"]
+    timeServer["timeServer (Time Panel)"]
+    aboutServer["aboutServer (About Panel)"]
 
-    traitServer["traitServer (Trait Panel)"]:::panel
-    contrastServer["contrastServer (Contrast Panel)"]:::panel
-    statsServer["statsServer (Stats Panel)"]:::panel
-    timeServer["timeServer (Time Panel)"]:::panel
-    aboutServer["aboutServer (About Panel)"]:::panel
+    corPlotApp["corPlotApp"]
+    corTableApp["corTableApp"]
+    traitNamesApp["traitNamesApp (x2)"]
+    traitOrderApp["traitOrderApp"]
+    traitPairsApp["traitPairsApp"]
+    traitSolosApp["traitSolosApp"]
+    traitTableApp["traitTableApp"]
+
+    contrastGroupApp["contrastGroupApp"]
+    contrastTimeApp["contrastTimeApp"]
+    contrastTableApp["contrastTableApp (x3)"]
+    contrastTraitApp["contrastTraitApp"]
+    timePlotApp["timePlotApp"]
+    contrastPlotApp["contrastPlotApp"]
+    timeTraitsApp["timeTraitsApp"]
+    timeTableApp["timeTableApp"]
+
+    biplotApp["biplotApp"]
+    dotplotApp["dotplotApp"]
+    volcanoApp["volcanoApp"]
 
     foundrApp --> entryServer
     foundrApp --> panelServer
@@ -71,31 +85,31 @@ graph TD
 
     %% Trait Panel Sub-modules
     traitServer --> panelParServer
-    traitServer --> corPlotApp["corPlotApp"]:::submod
-    traitServer --> corTableApp["corTableApp"]:::submod
-    traitServer --> traitNamesApp["traitNamesApp (x2)"]:::submod
-    traitServer --> traitOrderApp["traitOrderApp"]:::submod
-    traitServer --> traitPairsApp["traitPairsApp"]:::submod
-    traitServer --> traitSolosApp["traitSolosApp"]:::submod
-    traitServer --> traitTableApp["traitTableApp"]:::submod
+    traitServer --> corPlotApp
+    traitServer --> corTableApp
+    traitServer --> traitNamesApp
+    traitServer --> traitOrderApp
+    traitServer --> traitPairsApp
+    traitServer --> traitSolosApp
+    traitServer --> traitTableApp
 
     %% Contrast Panel Sub-modules
     contrastServer --> panelParServer
-    contrastServer --> contrastGroupApp["contrastGroupApp"]:::submod
-    contrastServer --> contrastTimeApp["contrastTimeApp"]:::submod
-    contrastServer --> contrastTableApp["contrastTableApp (x3)"]:::submod
-    contrastServer --> contrastTraitApp["contrastTraitApp"]:::submod
-    contrastServer --> timePlotApp["timePlotApp"]:::submod
+    contrastServer --> contrastGroupApp
+    contrastServer --> contrastTimeApp
+    contrastServer --> contrastTableApp
+    contrastServer --> contrastTraitApp
+    contrastServer --> timePlotApp
 
-    contrastGroupApp --> contrastPlotApp["contrastPlotApp"]:::submod
+    contrastGroupApp --> contrastPlotApp
     contrastTableApp --> traitOrderApp
-    contrastTimeApp --> timeTraitsApp["timeTraitsApp"]:::submod
+    contrastTimeApp --> timeTraitsApp
     contrastTraitApp --> contrastPlotApp
 
     contrastPlotApp --> plotParServer
-    contrastPlotApp --> biplotApp["biplotApp"]:::plot
-    contrastPlotApp --> dotplotApp["dotplotApp"]:::plot
-    contrastPlotApp --> volcanoApp["volcanoApp"]:::plot
+    contrastPlotApp --> biplotApp
+    contrastPlotApp --> dotplotApp
+    contrastPlotApp --> volcanoApp
 
     biplotApp --> mainParServer
     biplotApp --> panelParServer
@@ -109,10 +123,24 @@ graph TD
     %% Time Panel Sub-modules
     timeServer --> panelParServer
     timeServer --> timePlotApp
-    timeServer --> timeTableApp["timeTableApp"]:::submod
+    timeServer --> timeTableApp
 
     timeTableApp --> timeTraitsApp
     timeTableApp --> traitOrderApp
+
+    classDef entry fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
+    classDef router fill:#ff7f0e,stroke:#333,stroke-width:2px,color:#fff
+    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
+    classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff
+    classDef submod fill:#9467bd,stroke:#333,stroke-width:2px,color:#fff
+    classDef plot fill:#8c564b,stroke:#333,stroke-width:2px,color:#fff
+
+    class foundrApp,entryServer entry
+    class panelServer router
+    class mainParServer,panelParServer,plotParServer param
+    class traitServer,contrastServer,statsServer,timeServer,aboutServer panel
+    class corPlotApp,corTableApp,traitNamesApp,traitOrderApp,traitPairsApp,traitSolosApp,traitTableApp,contrastGroupApp,contrastTimeApp,contrastTableApp,contrastTraitApp,timePlotApp,contrastPlotApp,timeTraitsApp,timeTableApp submod
+    class biplotApp,dotplotApp,volcanoApp plot
 ```
 
 ---

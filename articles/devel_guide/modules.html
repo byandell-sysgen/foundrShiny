@@ -151,10 +151,76 @@ modules.</p>
 <div class="section level3">
 <h3 id="complete-module-categorization">Complete Module Categorization<a class="anchor" aria-label="anchor" href="#complete-module-categorization"></a>
 </h3>
-<p>The ~30 package modules are grouped into 8 functional categories:</p>
+<p>The ~30 package modules are grouped into 8 functional categories.
+Below is a high-level flowchart depicting the system-level relationships
+between infrastructure, parameter management, panel routers, and
+visualization sub-modules.</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph Infrastructure["1. Infrastructure &amp; Parameters"]
+        app["foundrApp &amp; panelServer"]
+        params["Parameter Tiers (mainPar, panelPar, plotPar)"]
+    end
+
+    subgraph Panels["Tab Panels"]
+        trait["3. Trait Panel"]
+        contrast["4. Contrast Panel"]
+        stats["5. Stats Panel"]
+        time["6. Time Panel"]
+        about["About Panel"]
+    end
+
+    subgraph Plots["7. Plot Sub-Modules"]
+        plotMods["biplotApp, dotplotApp, volcanoApp"]
+    end
+
+    app --&gt; params
+    app --&gt; trait
+    app --&gt; contrast
+    app --&gt; stats
+    app --&gt; time
+    app --&gt; about
+
+    contrast --&gt; plotMods
+    stats --&gt; plotMods
+
+    classDef infra fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
+    classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff
+    classDef plot fill:#8c564b,stroke:#333,stroke-width:2px,color:#fff
+
+    class app,params infra
+    class trait,contrast,stats,time,about panel
+    class plotMods plot</code></pre>
+<hr>
 <div class="section level4">
-<h4 id="application-infrastructure">1. Application Infrastructure<a class="anchor" aria-label="anchor" href="#application-infrastructure"></a>
+<h4 id="application-infrastructure-2--parameter-tier-modules">1. Application Infrastructure &amp; 2. Parameter Tier Modules<a class="anchor" aria-label="anchor" href="#application-infrastructure-2--parameter-tier-modules"></a>
 </h4>
+<pre class="mermaid"><code>flowchart TD
+    foundrApp["foundrApp / foundrServer"]
+    entryServer["entryServer (Authentication)"]
+    panelServer["panelServer (5-Tab Router)"]
+    downloadApp["downloadApp (Export Helper)"]
+    aboutServer["aboutServer (Info &amp; Help)"]
+
+    mainParServer["mainParServer (Global: dataset, order, height)"]
+    panelParServer["panelParServer (Panel: strains, sex, facet)"]
+    plotParServer["plotParServer (Plot: thresholds, interact, labels)"]
+
+    foundrApp --&gt; entryServer
+    foundrApp --&gt; panelServer
+    panelServer --&gt; aboutServer
+    panelServer --&gt; downloadApp
+
+    panelServer --&gt; mainParServer
+    mainParServer --&gt; panelParServer
+    panelParServer --&gt; plotParServer
+
+    classDef entry fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
+    classDef router fill:#ff7f0e,stroke:#333,stroke-width:2px,color:#fff
+    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
+
+    class foundrApp,entryServer,downloadApp,aboutServer entry
+    class panelServer router
+    class mainParServer,panelParServer,plotParServer param</code></pre>
 <ul>
 <li>
 <strong><code>foundrApp.R</code></strong>: Top-level application
@@ -173,12 +239,6 @@ displaying project documentation, version info, and help files.</li>
 <strong><code>downloadApp.R</code></strong>: Standardized download
 module taking plot and table reactive objects and formatting PDF/CSV
 exports.</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="parameter-tier-modules">2. Parameter Tier Modules<a class="anchor" aria-label="anchor" href="#parameter-tier-modules"></a>
-</h4>
-<ul>
 <li>
 <strong><code>mainParApp.R</code></strong>: Global parameter manager
 (<code>main_par</code>: dataset instance, trait order method, plot
@@ -194,10 +254,41 @@ manager (<code>plot_par</code>: volcano thresholds
 <code>volsd</code>/<code>volvert</code>, interaction toggles, row
 labels).</li>
 </ul>
+<hr>
 </div>
 <div class="section level4">
 <h4 id="trait-panel-modules">3. Trait Panel Modules<a class="anchor" aria-label="anchor" href="#trait-panel-modules"></a>
 </h4>
+<pre class="mermaid"><code>flowchart TD
+    traitServer["traitServer (Trait Panel Router)"]
+    panelParServer["panelParServer (Panel Parameters)"]
+
+    corPlotApp["corPlotApp (Correlation Matrix Plots)"]
+    corTableApp["corTableApp (Correlation Tables)"]
+    traitNamesKey["traitNamesApp (Key Trait Selection)"]
+    traitNamesRel["traitNamesApp (Related Trait Selection)"]
+    traitOrderApp["traitOrderApp (Trait Sorting)"]
+    traitPairsApp["traitPairsApp (Pairwise Scatter Plots)"]
+    traitSolosApp["traitSolosApp (Individual Trait Plots)"]
+    traitTableApp["traitTableApp (Phenotype Data Table)"]
+
+    traitServer --&gt; panelParServer
+    traitServer --&gt; traitOrderApp
+    traitServer --&gt; traitNamesKey
+    traitServer --&gt; corTableApp
+    traitServer --&gt; traitNamesRel
+    traitServer --&gt; corPlotApp
+    traitServer --&gt; traitTableApp
+    traitServer --&gt; traitSolosApp
+    traitServer --&gt; traitPairsApp
+
+    classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff
+    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
+    classDef submod fill:#9467bd,stroke:#333,stroke-width:2px,color:#fff
+
+    class traitServer panel
+    class panelParServer param
+    class corPlotApp,corTableApp,traitNamesKey,traitNamesRel,traitOrderApp,traitPairsApp,traitSolosApp,traitTableApp submod</code></pre>
 <ul>
 <li>
 <strong><code>traitApp.R</code></strong>: Master trait visualization
@@ -224,10 +315,59 @@ distribution boxplots and strain means.</li>
 <strong><code>traitTableApp.R</code></strong>: Phenotype summary
 data tables.</li>
 </ul>
+<hr>
 </div>
 <div class="section level4">
 <h4 id="contrast-panel-modules">4. Contrast Panel Modules<a class="anchor" aria-label="anchor" href="#contrast-panel-modules"></a>
 </h4>
+<pre class="mermaid"><code>flowchart TD
+    contrastServer["contrastServer (Contrast Panel Router)"]
+    panelParServer["panelParServer (Panel Parameters)"]
+
+    contrastTableApp["contrastTableApp (Contrast Table)"]
+    traitOrderApp["traitOrderApp (Trait Sorting)"]
+    contrastSexApp["contrastSexApp (Sex Contrast)"]
+    contrastGroupApp["contrastGroupApp (Group/Module Contrast)"]
+    contrastTimeApp["contrastTimeApp (Time Contrast)"]
+    contrastTraitApp["contrastTraitApp (Trait Contrast)"]
+
+    contrastPlotApp["contrastPlotApp (Plot Dispatcher)"]
+    timeTraitsApp["timeTraitsApp (Time Trait Selector)"]
+    timePlotApp["timePlotApp (Time Series Plot)"]
+    plotParServer["plotParServer (Plot Parameters)"]
+
+    biplotApp["biplotApp (PCA Biplot)"]
+    dotplotApp["dotplotApp (Effect Size Dotplot)"]
+    volcanoApp["volcanoApp (Volcano Plot)"]
+
+    contrastServer --&gt; panelParServer
+    contrastServer --&gt; contrastTableApp
+    contrastServer --&gt; contrastSexApp
+    contrastServer --&gt; contrastGroupApp
+    contrastServer --&gt; contrastTimeApp
+    contrastServer --&gt; contrastTraitApp
+
+    contrastTableApp --&gt; traitOrderApp
+    contrastSexApp --&gt; contrastPlotApp
+    contrastGroupApp --&gt; contrastPlotApp
+    contrastTraitApp --&gt; contrastPlotApp
+    contrastTimeApp --&gt; timeTraitsApp
+    contrastTimeApp --&gt; timePlotApp
+
+    contrastPlotApp --&gt; plotParServer
+    contrastPlotApp --&gt; biplotApp
+    contrastPlotApp --&gt; dotplotApp
+    contrastPlotApp --&gt; volcanoApp
+
+    classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff
+    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
+    classDef submod fill:#9467bd,stroke:#333,stroke-width:2px,color:#fff
+    classDef plot fill:#8c564b,stroke:#333,stroke-width:2px,color:#fff
+
+    class contrastServer panel
+    class panelParServer,plotParServer param
+    class contrastTableApp,traitOrderApp,contrastSexApp,contrastGroupApp,contrastTimeApp,contrastTraitApp,contrastPlotApp,timeTraitsApp,timePlotApp submod
+    class biplotApp,dotplotApp,volcanoApp plot</code></pre>
 <ul>
 <li>
 <strong><code>contrastApp.R</code></strong>: Condition contrast
@@ -249,6 +389,7 @@ over longitudinal time series.</li>
 <strong><code>contrastTraitApp.R</code></strong>: Single-trait
 condition contrast displays.</li>
 </ul>
+<hr>
 </div>
 <div class="section level4">
 <h4 id="stats-panel-modules">5. Stats Panel Modules<a class="anchor" aria-label="anchor" href="#stats-panel-modules"></a>
@@ -258,10 +399,34 @@ condition contrast displays.</li>
 <strong><code>statsApp.R</code></strong>: Statistical model
 design-effect panel delegating to <code>contrastPlotApp</code>.</li>
 </ul>
+<hr>
 </div>
 <div class="section level4">
 <h4 id="time-panel-modules">6. Time Panel Modules<a class="anchor" aria-label="anchor" href="#time-panel-modules"></a>
 </h4>
+<pre class="mermaid"><code>flowchart TD
+    timeServer["timeServer (Time Panel Router)"]
+    panelParServer["panelParServer (Panel Parameters)"]
+
+    timePlotApp["timePlotApp (Longitudinal Trait Plots)"]
+    timeTableApp["timeTableApp (Time Observations Table)"]
+    timeTraitsApp["timeTraitsApp (Time Trait Selection)"]
+    traitOrderApp["traitOrderApp (Trait Sorting)"]
+
+    timeServer --&gt; panelParServer
+    timeServer --&gt; timePlotApp
+    timeServer --&gt; timeTableApp
+
+    timeTableApp --&gt; timeTraitsApp
+    timeTableApp --&gt; traitOrderApp
+
+    classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff
+    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
+    classDef submod fill:#9467bd,stroke:#333,stroke-width:2px,color:#fff
+
+    class timeServer panel
+    class panelParServer param
+    class timePlotApp,timeTableApp,timeTraitsApp,traitOrderApp submod</code></pre>
 <ul>
 <li>
 <strong><code>timeApp.R</code></strong>: Time-series phenotyping
@@ -276,6 +441,7 @@ observation data tables.</li>
 <strong><code>timeTraitsApp.R</code></strong>: Trait selection for
 time-series comparisons.</li>
 </ul>
+<hr>
 </div>
 <div class="section level4">
 <h4 id="plot-sub-modules">7. Plot Sub-Modules<a class="anchor" aria-label="anchor" href="#plot-sub-modules"></a>
@@ -291,6 +457,7 @@ biplots highlighting strain vectors.</li>
 <strong><code>dotplotApp.R</code></strong>: Ordered dotplots of
 strain contrast effect sizes.</li>
 </ul>
+<hr>
 </div>
 <div class="section level4">
 <h4 id="non-app-helper-files">8. Non-App Helper Files<a class="anchor" aria-label="anchor" href="#non-app-helper-files"></a>

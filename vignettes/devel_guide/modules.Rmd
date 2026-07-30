@@ -42,12 +42,17 @@ The ~30 package modules are grouped into 8 functional categories. Below is a hig
 
 ```mermaid
 flowchart TD
-    subgraph Infrastructure["1. Infrastructure & Parameters"]
+    subgraph Infra["1. Application Infrastructure"]
         app["foundrApp & panelServer"]
-        params["Parameter Tiers (mainPar, panelPar, plotPar)"]
+        entry["entryServer (Auth)"]
+        download["downloadApp"]
     end
 
-    subgraph Panels["Tab Panels"]
+    subgraph Params["2. Parameter Tier Modules"]
+        params["mainPar, panelPar, plotPar"]
+    end
+
+    subgraph Panels["Tab Panels (3-6)"]
         trait["3. Trait Panel"]
         contrast["4. Contrast Panel"]
         stats["5. Stats Panel"]
@@ -59,28 +64,32 @@ flowchart TD
         plotMods["biplotApp, dotplotApp, volcanoApp"]
     end
 
+    app --> entry
     app --> params
     app --> trait
     app --> contrast
     app --> stats
     app --> time
     app --> about
+    app --> download
 
     contrast --> plotMods
     stats --> plotMods
 
     classDef infra fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
+    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
     classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff
     classDef plot fill:#8c564b,stroke:#333,stroke-width:2px,color:#fff
 
-    class app,params infra
+    class app,entry,download infra
+    class params param
     class trait,contrast,stats,time,about panel
     class plotMods plot
 ```
 
 ---
 
-### 1. Application Infrastructure & 2. Parameter Tier Modules
+### 1. Application Infrastructure
 
 ```mermaid
 flowchart TD
@@ -90,26 +99,16 @@ flowchart TD
     downloadApp["downloadApp (Export Helper)"]
     aboutServer["aboutServer (Info & Help)"]
 
-    mainParServer["mainParServer (Global: dataset, order, height)"]
-    panelParServer["panelParServer (Panel: strains, sex, facet)"]
-    plotParServer["plotParServer (Plot: thresholds, interact, labels)"]
-
     foundrApp --> entryServer
     foundrApp --> panelServer
     panelServer --> aboutServer
     panelServer --> downloadApp
 
-    panelServer --> mainParServer
-    mainParServer --> panelParServer
-    panelParServer --> plotParServer
-
     classDef entry fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
     classDef router fill:#ff7f0e,stroke:#333,stroke-width:2px,color:#fff
-    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
 
     class foundrApp,entryServer,downloadApp,aboutServer entry
     class panelServer router
-    class mainParServer,panelParServer,plotParServer param
 ```
 
 - **`foundrApp.R`**: Top-level application entry point uniting entry authentication and panel router.
@@ -117,6 +116,24 @@ flowchart TD
 - **`entryApp.R`**: Optional password authentication module supporting debounced key entry.
 - **`aboutApp.R`**: Information panel displaying project documentation, version info, and help files.
 - **`downloadApp.R`**: Standardized download module taking plot and table reactive objects and formatting PDF/CSV exports.
+
+---
+
+### 2. Parameter Tier Modules
+
+```mermaid
+flowchart TD
+    mainParServer["mainParServer (Global: dataset, order, height)"]
+    panelParServer["panelParServer (Panel: strains, sex, facet)"]
+    plotParServer["plotParServer (Plot: thresholds, interact, labels)"]
+
+    mainParServer --> panelParServer
+    panelParServer --> plotParServer
+
+    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
+    class mainParServer,panelParServer,plotParServer param
+```
+
 - **`mainParApp.R`**: Global parameter manager (`main_par`: dataset instance, trait order method, plot height).
 - **`panelParApp.R`**: Panel-level parameter manager (`panel_par`: strain/genotype filters, sex `B`/`F`/`M`/`C`, faceting).
 - **`plotParApp.R`**: Plot-level parameter manager (`plot_par`: volcano thresholds `volsd`/`volvert`, interaction toggles, row labels).
@@ -128,34 +145,71 @@ flowchart TD
 ```mermaid
 flowchart TD
     traitServer["traitServer (Trait Panel Router)"]
-    panelParServer["panelParServer (Panel Parameters)"]
 
-    corPlotApp["corPlotApp (Correlation Matrix Plots)"]
-    corTableApp["corTableApp (Correlation Tables)"]
-    traitNamesKey["traitNamesApp (Key Trait Selection)"]
-    traitNamesRel["traitNamesApp (Related Trait Selection)"]
-    traitOrderApp["traitOrderApp (Trait Sorting)"]
-    traitPairsApp["traitPairsApp (Pairwise Scatter Plots)"]
-    traitSolosApp["traitSolosApp (Individual Trait Plots)"]
-    traitTableApp["traitTableApp (Phenotype Data Table)"]
+    subgraph Inputs["Parameter & Data Inputs"]
+        main_par["mainParServer (main_par)"]
+        panel_par["panelParServer (panel_par)"]
+        traitStats["traitStats"]
+        traitSignal["traitSignal"]
+        traitData["traitData"]
+    end
 
-    traitServer --> panelParServer
-    traitServer --> traitOrderApp
-    traitServer --> traitNamesKey
-    traitServer --> corTableApp
-    traitServer --> traitNamesRel
-    traitServer --> corPlotApp
-    traitServer --> traitTableApp
-    traitServer --> traitSolosApp
-    traitServer --> traitPairsApp
+    subgraph OrderingKey["1. Ordering & Key Trait Selection"]
+        traitOrderApp["traitOrderApp (Order Traits by Stats)"]
+        keyTrait["traitNamesApp (Key Trait Selector)"]
+    end
+
+    subgraph Correlations["2. Correlation Analysis"]
+        corTableApp["corTableApp (Correlation Table)"]
+        relTraits["traitNamesApp (Related Traits Selector)"]
+        corPlotApp["corPlotApp (Correlation Matrix Plot)"]
+    end
+
+    subgraph PhenotypeDisplay["3. Phenotype Data & Plotting"]
+        trait_names["trait_names (Combined Key + Related Traits)"]
+        traitTableApp["traitTableApp (Phenotype Data Table)"]
+        traitSolosApp["traitSolosApp (Individual Trait Plots)"]
+        traitPairsApp["traitPairsApp (Pairwise Scatter Plots)"]
+    end
+
+    traitServer --> main_par
+    traitServer --> panel_par
+
+    traitStats --> traitOrderApp
+    main_par --> traitOrderApp
+
+    traitOrderApp -->|"stats_table"| keyTrait
+    main_par --> keyTrait
+
+    keyTrait -->|"key_trait"| corTableApp
+    traitSignal --> corTableApp
+
+    corTableApp -->|"cors_table"| relTraits
+    corTableApp -->|"cors_table"| corPlotApp
+
+    keyTrait -->|"key_trait"| trait_names
+    relTraits -->|"rel_traits"| trait_names
+
+    keyTrait -->|"key_trait"| traitTableApp
+    relTraits -->|"rel_traits"| traitTableApp
+    traitData --> traitTableApp
+    traitSignal --> traitTableApp
+    panel_par --> traitTableApp
+
+    traitTableApp -->|"trait_table"| traitSolosApp
+    panel_par --> traitSolosApp
+
+    traitTableApp -->|"trait_table"| traitPairsApp
+    trait_names -->|"trait_names"| traitPairsApp
+    panel_par --> traitPairsApp
 
     classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff
-    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
+    classDef input fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
     classDef submod fill:#9467bd,stroke:#333,stroke-width:2px,color:#fff
 
     class traitServer panel
-    class panelParServer param
-    class corPlotApp,corTableApp,traitNamesKey,traitNamesRel,traitOrderApp,traitPairsApp,traitSolosApp,traitTableApp submod
+    class main_par,panel_par,traitStats,traitSignal,traitData input
+    class traitOrderApp,keyTrait,corTableApp,relTraits,corPlotApp,trait_names,traitTableApp,traitSolosApp,traitPairsApp submod
 ```
 
 - **`traitApp.R`**: Master trait visualization panel routing sub-module displays.
@@ -174,51 +228,67 @@ flowchart TD
 ```mermaid
 flowchart TD
     contrastServer["contrastServer (Contrast Panel Router)"]
-    panelParServer["panelParServer (Panel Parameters)"]
 
-    contrastTableApp["contrastTableApp (Contrast Table)"]
-    traitOrderApp["traitOrderApp (Trait Sorting)"]
-    contrastSexApp["contrastSexApp (Sex Contrast)"]
-    contrastGroupApp["contrastGroupApp (Group/Module Contrast)"]
-    contrastTimeApp["contrastTimeApp (Time Contrast)"]
-    contrastTraitApp["contrastTraitApp (Trait Contrast)"]
+    subgraph Inputs["Parameter & Data Inputs"]
+        main_par["mainParServer (main_par)"]
+        panel_par["panelParServer (panel_par)"]
+        traitSignal["traitSignal"]
+        traitStats["traitStats"]
+        traitModule["traitModule"]
+        customSettings["customSettings"]
+    end
 
-    contrastPlotApp["contrastPlotApp (Plot Dispatcher)"]
-    timeTraitsApp["timeTraitsApp (Time Trait Selector)"]
-    timePlotApp["timePlotApp (Time Series Plot)"]
-    plotParServer["plotParServer (Plot Parameters)"]
+    subgraph Tables["1. Contrast Tables (contrastTableServer)"]
+        trait_table["trait_table (Trait Contrast Table)"]
+        group_table["group_table (Group Contrast Table)"]
+        stats_time_table["stats_time_table (Time Subsets)"]
+        time_table["time_table (Time Contrast Table)"]
+    end
 
-    biplotApp["biplotApp (PCA Biplot)"]
-    dotplotApp["dotplotApp (Effect Size Dotplot)"]
-    volcanoApp["volcanoApp (Volcano Plot)"]
+    subgraph DisplayModules["2. Contrast View Modules"]
+        contrastTraitApp["contrastTraitServer (Trait View)"]
+        contrastGroupApp["contrastGroupServer (Group/Module View)"]
+        contrastTimeApp["contrastTimeServer (Time View)"]
+        timePlotApp["timePlotServer (Longitudinal Plot)"]
+    end
 
-    contrastServer --> panelParServer
-    contrastServer --> contrastTableApp
-    contrastServer --> contrastSexApp
-    contrastServer --> contrastGroupApp
-    contrastServer --> contrastTimeApp
-    contrastServer --> contrastTraitApp
+    subgraph PlotDispatcher["3. Plot Dispatcher & Rendering"]
+        contrastPlotApp["contrastPlotServer (Plot Dispatcher)"]
+        plot_par["plotParServer (plot_par)"]
+        biplotApp["biplotServer (PCA Biplot)"]
+        dotplotApp["dotplotServer (Effect Size Dotplot)"]
+        volcanoApp["volcanoServer (Volcano Plot)"]
+    end
 
-    contrastTableApp --> traitOrderApp
-    contrastSexApp --> contrastPlotApp
-    contrastGroupApp --> contrastPlotApp
+    contrastServer --> main_par
+    contrastServer --> panel_par
+
+    traitSignal & traitStats & main_par --> trait_table
+    traitSignal & traitStats & traitModule & main_par --> group_table
+    traitSignal & traitStats --> stats_time_table --> time_table
+
+    trait_table --> contrastTraitApp
+    trait_table & group_table & traitModule --> contrastGroupApp
+
+    time_table & stats_time_table --> contrastTimeApp
+    contrastTimeApp -->|"contrast_time"| timePlotApp
+
     contrastTraitApp --> contrastPlotApp
-    contrastTimeApp --> timeTraitsApp
-    contrastTimeApp --> timePlotApp
+    contrastGroupApp --> contrastPlotApp
 
-    contrastPlotApp --> plotParServer
+    contrastPlotApp --> plot_par
     contrastPlotApp --> biplotApp
     contrastPlotApp --> dotplotApp
     contrastPlotApp --> volcanoApp
 
     classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff
-    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
+    classDef input fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
     classDef submod fill:#9467bd,stroke:#333,stroke-width:2px,color:#fff
     classDef plot fill:#8c564b,stroke:#333,stroke-width:2px,color:#fff
 
     class contrastServer panel
-    class panelParServer,plotParServer param
-    class contrastTableApp,traitOrderApp,contrastSexApp,contrastGroupApp,contrastTimeApp,contrastTraitApp,contrastPlotApp,timeTraitsApp,timePlotApp submod
+    class main_par,panel_par,traitSignal,traitStats,traitModule,customSettings input
+    class trait_table,group_table,stats_time_table,time_table,contrastTraitApp,contrastGroupApp,contrastTimeApp,timePlotApp,contrastPlotApp,plot_par submod
     class biplotApp,dotplotApp,volcanoApp plot
 ```
 

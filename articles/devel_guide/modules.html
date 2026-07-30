@@ -156,48 +156,45 @@ Below is a high-level flowchart depicting the system-level relationships
 between infrastructure, parameter management, panel routers, and
 visualization sub-modules.</p>
 <pre class="mermaid"><code>flowchart TD
-    subgraph Infra["1. Application Infrastructure"]
-        app["foundrApp &amp; panelServer"]
-        entry["entryServer (Auth)"]
-        download["downloadApp"]
-    end
+    foundrApp["foundrApp / foundrServer"]
+    panelServer["panelServer (5-Tab Router)"]
 
-    subgraph Params["2. Parameter Tier Modules"]
-        params["mainPar, panelPar, plotPar"]
-    end
+    mainParServer["mainParServer (Global Parameters)"]
 
     subgraph Panels["Tab Panels (3-6)"]
-        trait["3. Trait Panel"]
-        contrast["4. Contrast Panel"]
-        stats["5. Stats Panel"]
-        time["6. Time Panel"]
-        about["About Panel"]
+        traitServer["3. Trait Panel (traitServer)"]
+        contrastServer["4. Contrast Panel (contrastServer)"]
+        statsServer["5. Stats Panel (statsServer)"]
+        timeServer["6. Time Panel (timeServer)"]
+        aboutServer["About Panel (aboutServer)"]
     end
 
     subgraph Plots["7. Plot Sub-Modules"]
         plotMods["biplotApp, dotplotApp, volcanoApp"]
     end
 
-    app --&gt; entry
-    app --&gt; params
-    app --&gt; trait
-    app --&gt; contrast
-    app --&gt; stats
-    app --&gt; time
-    app --&gt; about
-    app --&gt; download
+    foundrApp --&gt; panelServer
 
-    contrast --&gt; plotMods
-    stats --&gt; plotMods
+    panelServer --&gt; mainParServer
+    panelServer --&gt; traitServer
+    panelServer --&gt; contrastServer
+    panelServer --&gt; statsServer
+    panelServer --&gt; timeServer
+    panelServer --&gt; aboutServer
 
-    classDef infra fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
+    contrastServer --&gt; plotMods
+    statsServer --&gt; plotMods
+
+    classDef entry fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
+    classDef router fill:#ff7f0e,stroke:#333,stroke-width:2px,color:#fff
     classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
     classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff
     classDef plot fill:#8c564b,stroke:#333,stroke-width:2px,color:#fff
 
-    class app,entry,download infra
-    class params param
-    class trait,contrast,stats,time,about panel
+    class foundrApp entry
+    class panelServer router
+    class mainParServer param
+    class traitServer,contrastServer,statsServer,timeServer,aboutServer panel
     class plotMods plot</code></pre>
 <hr>
 <div class="section level4">

@@ -156,12 +156,17 @@ Below is a high-level flowchart depicting the system-level relationships
 between infrastructure, parameter management, panel routers, and
 visualization sub-modules.</p>
 <pre class="mermaid"><code>flowchart TD
-    subgraph Infrastructure["1. Infrastructure &amp; Parameters"]
+    subgraph Infra["1. Application Infrastructure"]
         app["foundrApp &amp; panelServer"]
-        params["Parameter Tiers (mainPar, panelPar, plotPar)"]
+        entry["entryServer (Auth)"]
+        download["downloadApp"]
     end
 
-    subgraph Panels["Tab Panels"]
+    subgraph Params["2. Parameter Tier Modules"]
+        params["mainPar, panelPar, plotPar"]
+    end
+
+    subgraph Panels["Tab Panels (3-6)"]
         trait["3. Trait Panel"]
         contrast["4. Contrast Panel"]
         stats["5. Stats Panel"]
@@ -173,26 +178,30 @@ visualization sub-modules.</p>
         plotMods["biplotApp, dotplotApp, volcanoApp"]
     end
 
+    app --&gt; entry
     app --&gt; params
     app --&gt; trait
     app --&gt; contrast
     app --&gt; stats
     app --&gt; time
     app --&gt; about
+    app --&gt; download
 
     contrast --&gt; plotMods
     stats --&gt; plotMods
 
     classDef infra fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
+    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
     classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff
     classDef plot fill:#8c564b,stroke:#333,stroke-width:2px,color:#fff
 
-    class app,params infra
+    class app,entry,download infra
+    class params param
     class trait,contrast,stats,time,about panel
     class plotMods plot</code></pre>
 <hr>
 <div class="section level4">
-<h4 id="application-infrastructure-2--parameter-tier-modules">1. Application Infrastructure &amp; 2. Parameter Tier Modules<a class="anchor" aria-label="anchor" href="#application-infrastructure-2--parameter-tier-modules"></a>
+<h4 id="application-infrastructure">1. Application Infrastructure<a class="anchor" aria-label="anchor" href="#application-infrastructure"></a>
 </h4>
 <pre class="mermaid"><code>flowchart TD
     foundrApp["foundrApp / foundrServer"]
@@ -201,26 +210,16 @@ visualization sub-modules.</p>
     downloadApp["downloadApp (Export Helper)"]
     aboutServer["aboutServer (Info &amp; Help)"]
 
-    mainParServer["mainParServer (Global: dataset, order, height)"]
-    panelParServer["panelParServer (Panel: strains, sex, facet)"]
-    plotParServer["plotParServer (Plot: thresholds, interact, labels)"]
-
     foundrApp --&gt; entryServer
     foundrApp --&gt; panelServer
     panelServer --&gt; aboutServer
     panelServer --&gt; downloadApp
 
-    panelServer --&gt; mainParServer
-    mainParServer --&gt; panelParServer
-    panelParServer --&gt; plotParServer
-
     classDef entry fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
     classDef router fill:#ff7f0e,stroke:#333,stroke-width:2px,color:#fff
-    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
 
     class foundrApp,entryServer,downloadApp,aboutServer entry
-    class panelServer router
-    class mainParServer,panelParServer,plotParServer param</code></pre>
+    class panelServer router</code></pre>
 <ul>
 <li>
 <strong><code>foundrApp.R</code></strong>: Top-level application
@@ -239,6 +238,23 @@ displaying project documentation, version info, and help files.</li>
 <strong><code>downloadApp.R</code></strong>: Standardized download
 module taking plot and table reactive objects and formatting PDF/CSV
 exports.</li>
+</ul>
+<hr>
+</div>
+<div class="section level4">
+<h4 id="parameter-tier-modules">2. Parameter Tier Modules<a class="anchor" aria-label="anchor" href="#parameter-tier-modules"></a>
+</h4>
+<pre class="mermaid"><code>flowchart TD
+    mainParServer["mainParServer (Global: dataset, order, height)"]
+    panelParServer["panelParServer (Panel: strains, sex, facet)"]
+    plotParServer["plotParServer (Plot: thresholds, interact, labels)"]
+
+    mainParServer --&gt; panelParServer
+    panelParServer --&gt; plotParServer
+
+    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
+    class mainParServer,panelParServer,plotParServer param</code></pre>
+<ul>
 <li>
 <strong><code>mainParApp.R</code></strong>: Global parameter manager
 (<code>main_par</code>: dataset instance, trait order method, plot
@@ -261,34 +277,71 @@ labels).</li>
 </h4>
 <pre class="mermaid"><code>flowchart TD
     traitServer["traitServer (Trait Panel Router)"]
-    panelParServer["panelParServer (Panel Parameters)"]
 
-    corPlotApp["corPlotApp (Correlation Matrix Plots)"]
-    corTableApp["corTableApp (Correlation Tables)"]
-    traitNamesKey["traitNamesApp (Key Trait Selection)"]
-    traitNamesRel["traitNamesApp (Related Trait Selection)"]
-    traitOrderApp["traitOrderApp (Trait Sorting)"]
-    traitPairsApp["traitPairsApp (Pairwise Scatter Plots)"]
-    traitSolosApp["traitSolosApp (Individual Trait Plots)"]
-    traitTableApp["traitTableApp (Phenotype Data Table)"]
+    subgraph Inputs["Parameter &amp; Data Inputs"]
+        main_par["mainParServer (main_par)"]
+        panel_par["panelParServer (panel_par)"]
+        traitStats["traitStats"]
+        traitSignal["traitSignal"]
+        traitData["traitData"]
+    end
 
-    traitServer --&gt; panelParServer
-    traitServer --&gt; traitOrderApp
-    traitServer --&gt; traitNamesKey
-    traitServer --&gt; corTableApp
-    traitServer --&gt; traitNamesRel
-    traitServer --&gt; corPlotApp
-    traitServer --&gt; traitTableApp
-    traitServer --&gt; traitSolosApp
-    traitServer --&gt; traitPairsApp
+    subgraph OrderingKey["1. Ordering &amp; Key Trait Selection"]
+        traitOrderApp["traitOrderApp (Order Traits by Stats)"]
+        keyTrait["traitNamesApp (Key Trait Selector)"]
+    end
+
+    subgraph Correlations["2. Correlation Analysis"]
+        corTableApp["corTableApp (Correlation Table)"]
+        relTraits["traitNamesApp (Related Traits Selector)"]
+        corPlotApp["corPlotApp (Correlation Matrix Plot)"]
+    end
+
+    subgraph PhenotypeDisplay["3. Phenotype Data &amp; Plotting"]
+        trait_names["trait_names (Combined Key + Related Traits)"]
+        traitTableApp["traitTableApp (Phenotype Data Table)"]
+        traitSolosApp["traitSolosApp (Individual Trait Plots)"]
+        traitPairsApp["traitPairsApp (Pairwise Scatter Plots)"]
+    end
+
+    traitServer --&gt; main_par
+    traitServer --&gt; panel_par
+
+    traitStats --&gt; traitOrderApp
+    main_par --&gt; traitOrderApp
+
+    traitOrderApp --&gt;|"stats_table"| keyTrait
+    main_par --&gt; keyTrait
+
+    keyTrait --&gt;|"key_trait"| corTableApp
+    traitSignal --&gt; corTableApp
+
+    corTableApp --&gt;|"cors_table"| relTraits
+    corTableApp --&gt;|"cors_table"| corPlotApp
+
+    keyTrait --&gt;|"key_trait"| trait_names
+    relTraits --&gt;|"rel_traits"| trait_names
+
+    keyTrait --&gt;|"key_trait"| traitTableApp
+    relTraits --&gt;|"rel_traits"| traitTableApp
+    traitData --&gt; traitTableApp
+    traitSignal --&gt; traitTableApp
+    panel_par --&gt; traitTableApp
+
+    traitTableApp --&gt;|"trait_table"| traitSolosApp
+    panel_par --&gt; traitSolosApp
+
+    traitTableApp --&gt;|"trait_table"| traitPairsApp
+    trait_names --&gt;|"trait_names"| traitPairsApp
+    panel_par --&gt; traitPairsApp
 
     classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff
-    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
+    classDef input fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
     classDef submod fill:#9467bd,stroke:#333,stroke-width:2px,color:#fff
 
     class traitServer panel
-    class panelParServer param
-    class corPlotApp,corTableApp,traitNamesKey,traitNamesRel,traitOrderApp,traitPairsApp,traitSolosApp,traitTableApp submod</code></pre>
+    class main_par,panel_par,traitStats,traitSignal,traitData input
+    class traitOrderApp,keyTrait,corTableApp,relTraits,corPlotApp,trait_names,traitTableApp,traitSolosApp,traitPairsApp submod</code></pre>
 <ul>
 <li>
 <strong><code>traitApp.R</code></strong>: Master trait visualization
@@ -322,51 +375,67 @@ data tables.</li>
 </h4>
 <pre class="mermaid"><code>flowchart TD
     contrastServer["contrastServer (Contrast Panel Router)"]
-    panelParServer["panelParServer (Panel Parameters)"]
 
-    contrastTableApp["contrastTableApp (Contrast Table)"]
-    traitOrderApp["traitOrderApp (Trait Sorting)"]
-    contrastSexApp["contrastSexApp (Sex Contrast)"]
-    contrastGroupApp["contrastGroupApp (Group/Module Contrast)"]
-    contrastTimeApp["contrastTimeApp (Time Contrast)"]
-    contrastTraitApp["contrastTraitApp (Trait Contrast)"]
+    subgraph Inputs["Parameter &amp; Data Inputs"]
+        main_par["mainParServer (main_par)"]
+        panel_par["panelParServer (panel_par)"]
+        traitSignal["traitSignal"]
+        traitStats["traitStats"]
+        traitModule["traitModule"]
+        customSettings["customSettings"]
+    end
 
-    contrastPlotApp["contrastPlotApp (Plot Dispatcher)"]
-    timeTraitsApp["timeTraitsApp (Time Trait Selector)"]
-    timePlotApp["timePlotApp (Time Series Plot)"]
-    plotParServer["plotParServer (Plot Parameters)"]
+    subgraph Tables["1. Contrast Tables (contrastTableServer)"]
+        trait_table["trait_table (Trait Contrast Table)"]
+        group_table["group_table (Group Contrast Table)"]
+        stats_time_table["stats_time_table (Time Subsets)"]
+        time_table["time_table (Time Contrast Table)"]
+    end
 
-    biplotApp["biplotApp (PCA Biplot)"]
-    dotplotApp["dotplotApp (Effect Size Dotplot)"]
-    volcanoApp["volcanoApp (Volcano Plot)"]
+    subgraph DisplayModules["2. Contrast View Modules"]
+        contrastTraitApp["contrastTraitServer (Trait View)"]
+        contrastGroupApp["contrastGroupServer (Group/Module View)"]
+        contrastTimeApp["contrastTimeServer (Time View)"]
+        timePlotApp["timePlotServer (Longitudinal Plot)"]
+    end
 
-    contrastServer --&gt; panelParServer
-    contrastServer --&gt; contrastTableApp
-    contrastServer --&gt; contrastSexApp
-    contrastServer --&gt; contrastGroupApp
-    contrastServer --&gt; contrastTimeApp
-    contrastServer --&gt; contrastTraitApp
+    subgraph PlotDispatcher["3. Plot Dispatcher &amp; Rendering"]
+        contrastPlotApp["contrastPlotServer (Plot Dispatcher)"]
+        plot_par["plotParServer (plot_par)"]
+        biplotApp["biplotServer (PCA Biplot)"]
+        dotplotApp["dotplotServer (Effect Size Dotplot)"]
+        volcanoApp["volcanoServer (Volcano Plot)"]
+    end
 
-    contrastTableApp --&gt; traitOrderApp
-    contrastSexApp --&gt; contrastPlotApp
-    contrastGroupApp --&gt; contrastPlotApp
+    contrastServer --&gt; main_par
+    contrastServer --&gt; panel_par
+
+    traitSignal &amp; traitStats &amp; main_par --&gt; trait_table
+    traitSignal &amp; traitStats &amp; traitModule &amp; main_par --&gt; group_table
+    traitSignal &amp; traitStats --&gt; stats_time_table --&gt; time_table
+
+    trait_table --&gt; contrastTraitApp
+    trait_table &amp; group_table &amp; traitModule --&gt; contrastGroupApp
+
+    time_table &amp; stats_time_table --&gt; contrastTimeApp
+    contrastTimeApp --&gt;|"contrast_time"| timePlotApp
+
     contrastTraitApp --&gt; contrastPlotApp
-    contrastTimeApp --&gt; timeTraitsApp
-    contrastTimeApp --&gt; timePlotApp
+    contrastGroupApp --&gt; contrastPlotApp
 
-    contrastPlotApp --&gt; plotParServer
+    contrastPlotApp --&gt; plot_par
     contrastPlotApp --&gt; biplotApp
     contrastPlotApp --&gt; dotplotApp
     contrastPlotApp --&gt; volcanoApp
 
     classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff
-    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
+    classDef input fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
     classDef submod fill:#9467bd,stroke:#333,stroke-width:2px,color:#fff
     classDef plot fill:#8c564b,stroke:#333,stroke-width:2px,color:#fff
 
     class contrastServer panel
-    class panelParServer,plotParServer param
-    class contrastTableApp,traitOrderApp,contrastSexApp,contrastGroupApp,contrastTimeApp,contrastTraitApp,contrastPlotApp,timeTraitsApp,timePlotApp submod
+    class main_par,panel_par,traitSignal,traitStats,traitModule,customSettings input
+    class trait_table,group_table,stats_time_table,time_table,contrastTraitApp,contrastGroupApp,contrastTimeApp,timePlotApp,contrastPlotApp,plot_par submod
     class biplotApp,dotplotApp,volcanoApp plot</code></pre>
 <ul>
 <li>

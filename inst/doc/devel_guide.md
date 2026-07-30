@@ -75,18 +75,23 @@ When `pkgdown::build_site()` runs, it compiles static HTML files into `docs/`:
 - **Data Pipeline & Reactivity**: `articles/devel_guide/data_flow.html`
 - **Articles Landing Page**: `articles/index.html`
 
-### GitHub Pages Automated CI/CD Publishing (Best Practice)
+### GitHub Pages Automated CI/CD Publishing via `gh-pages`
 
 To avoid cluttering the `main` branch git history with hundreds of compiled HTML files from `docs/`:
 
-1. **Keep `docs/` in `.gitignore`** so local `pkgdown::build_site()` builds remain untracked locally.
-2. **Use [.github/workflows/pkgdown.yaml](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/.github/workflows/pkgdown.yaml)**: On every push to `main`, GitHub Actions automatically builds the package documentation and deploys the resulting HTML site to GitHub Pages.
-3. **GitHub Pages Setting**: On GitHub.com under **Settings** -> **Pages**:
-   - Set **Source**: **GitHub Actions** (or **Branch**: `gh-pages` / **Folder**: `/ (root)`).
+1. **Keep `docs/` in `.gitignore`**: Local `pkgdown::build_site()` builds remain untracked in your local workspace, keeping `main` clean (source files only).
+2. **Automated Deployment via [.github/workflows/pkgdown.yaml](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/.github/workflows/pkgdown.yaml)**:
+   - On every `git push` to `main`, GitHub Actions runs `pkgdown::build_site()` in a cloud container.
+   - The workflow step `r-lib/actions/deploy-pkgdown@v2` commits the compiled site directly to an isolated, automated **`gh-pages`** branch.
+3. **GitHub Pages Setting**:
+   - On GitHub.com under **Settings** -> **Pages**:
+     - Set **Source**: **Deploy from a branch**
+     - Set **Branch**: **`gh-pages`** / **`/ (root)`**
+     - Click **Save**
 
 > [!NOTE]
 > **Why `jekyll-build-pages` failed previously**:
-> GitHub's default Jekyll builder tried to build from `source: ./docs`. Because `docs/` was in `.gitignore` (and not pushed to GitHub), the runner found no `./docs` folder. Switching GitHub Pages **Source** to **GitHub Actions** resolves this completely without committing HTML files to `main`.
+> GitHub's default Jekyll builder tried to build from `source: ./docs` on `main`. Because `docs/` was in `.gitignore` (and not pushed to `main`), the runner found no `./docs` folder. Deploying via GitHub Actions to the `gh-pages` branch resolves this completely without committing HTML files to `main`.
 
 ---
 

@@ -198,6 +198,7 @@ foundrShiny::foundrApp()
 ## 7. Developer Coding Guidelines
 
 - **Explicit Package Namespacing:** Use `pkg::func()` for all imported functions (e.g., `shiny::moduleServer()`, `ggplot2::ggplot()`, `dplyr::filter()`) to prevent namespace collisions.
+- **Explicit Package Imports (No Meta-Packages):** Avoid meta-packages like `library(tidyverse)` in vignettes, source functions, or test scripts. Use explicit package imports (`library(dplyr)`, `library(ggplot2)`, etc.) to minimize dependency overhead and prevent build failures.
 - **Safe Vector Subsetting in R:** When stripping or filtering R comments, ALWAYS use `grepl("^\\s*#'", lines)` with `!grepl(...)` or `grep(..., invert = TRUE)`. Avoid using `!grep(...)` which can evaluate to logical `FALSE` and unexpectedly empty atomic vectors to `character(0)`.
 - **Roxygen Documentation:** Document exported functions using `#'` blocks in `R/*.R` files and maintain clear parameter descriptions.
 - **Verification:** Run `devtools::check()` locally before submitting pull requests or preparing package releases.

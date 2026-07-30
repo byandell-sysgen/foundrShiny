@@ -1,0 +1,369 @@
+# foundrShiny
+
+Shiny app tools companion package for
+[foundr](https://github.com/byandell/foundr) package. To install:
+
+    install.packages("devtools")
+    devtools::install_github("byandell/foundr", ref = "foundrBase")
+    devtools::install_github("byandell/foundrShiny")
+
+This package can be used to build shiny apps for analysis and
+visualization of founder data. It is part of a (planned) collection of
+packages. See [Foundr App Developer
+Guide](https://docs.google.com/presentation/d/171HEopFlSTtf_AbrA28YIAJxJHvkzihB4_lcV6Ct-eI)
+for an overview of package(s) use and components.
+
+- [foundr](https://github.com/byandell/foundr): data analysis and
+  visualization
+  - See [foundrBase tree of
+    foundr](https://github.com/byandell/foundr/tree/foundrBase) for the
+    revised `foundr` package (in testing phase).
+- [foundrShiny](https://github.com/byandell/foundrShiny): interactive
+  shiny app
+- [foundrHarmony](https://github.com/byandell/foundrHarmony): harmonize
+  data from multiple sources (being written)
+- [modulr](https://github.com/byandell/modulr): harmonize WGCNA module
+  objects
+
+## Improvements Planned
+
+- order module list on contrast by p-values
+- SD and logp calc and guideline defaults
+- add pct eigenvalue from module
+- larger points on several plots
+- need to rethink foundr::ggplot_conditionContrasts, which is now
+  bloated
+- added
+  [`panelApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/panelApp.md)
+  as a diagnostic tool to investigate tabs and panels
+
+## foundrShiny Modular Organization
+
+The foundrShiny package is completely organized using [Shiny
+modules](https://mastering-shiny.org/scaling-modules.html). All files in
+the `R` function directory have built-in apps following [shiny module
+naming
+conventions](https://mastering-shiny.org/scaling-modules.html#naming-conventions).
+A useful guide is [Mastering Shiny](https://mastering-shiny.org/).
+
+The app has a primary module `foundr` with secondary modules for the tab
+panels `trait`, `contrast`, `stats`, `time` and `about`.
+
+- [foundr.R](https://github.com/byandell/foundrShiny/blob/main/R/foundr.R):
+  main app; see also
+  [app.R](https://github.com/byandell/foundrShiny/blob/main/inst/shinyApp/app.R):
+  for deployment example.
+- [trait.R](https://github.com/byandell/foundrShiny/blob/main/R/trait.R):
+  trait visualization
+- [contrast.R](https://github.com/byandell/foundrShiny/blob/main/R/contrast.R):
+  contrasts of conditions across strains by sex
+- [stats.R](https://github.com/byandell/foundrShiny/blob/main/R/stats.R):
+  stats on design effects
+- [time.R](https://github.com/byandell/foundrShiny/blob/main/R/time.R):
+  traits over time
+- [about.R](https://github.com/byandell/foundrShiny/blob/main/R/about.R):
+  about this app
+
+Specialized modules are called from these modules. Two additional files
+that are not modules are the following:
+
+- foundr_helpers.R: helper functions
+- foundrSetup.R: setup data for all apps (requires data access)
+
+## foundrShiny Parameters
+
+Parameters are organized into sets
+
+- `main_par` global parameters
+- `panel_par` panel-specific parameters
+- `plot_par` plot-specific parameters
+
+These sets of parameters are
+[reactiveValues](https://mastering-shiny.org/reactivity-objects.html)
+placed in Shiny modules to simplify code readability through reuse.
+
+The parameter sets are served up via servers, which depend on some data
+object,
+
+    main_par <- mainParServer("main_par", traitSignal)
+    panel_par <- panelParServer("panel_par", main_par, traitSignal)
+    plot_par <- plotParServer("plot_par", contrast_table)
+
+and deployed via three UIs, which input parameter values. Each set is
+organized in its own shiny module, complete with app.
+
+- [mainPar.R](https://github.com/byandell/foundrShiny/blob/main/R/mainPar.R)
+- [panelPar.R](https://github.com/byandell/foundrShiny/blob/main/R/panelPar.R)
+- [plotPar.R](https://github.com/byandell/foundrShiny/blob/main/R/plotPar.R)
+
+### Global Parameters (`main_par`)
+
+The main parameters `main_par` are set in the main app in
+[foundr.R](https://github.com/byandell/foundrShiny/blob/main/R/foundr.R)
+and flow through to the panels
+
+    mainParInput("main_par"), # dataset
+    mainParUI("main_par"), # order
+    mainParOutput("main_par"), # plot_table, height
+
+### Plot-specific Parameters (`plot_par`)
+
+This set is used in the
+[contrastPlot.R](https://github.com/byandell/foundrShiny/blob/main/R/contrastPlot.R)
+module, which is reused to develop contrast plots across traits.
+
+    plotParInput("plot_par") # ordername, interact
+    plotParUI("plot_par"), # volsd, volvert (sliders)
+    plotParOutput("plot_par"), # rownames (strains/terms)
+
+These parameters are used in the three types of plots called via
+`contrastPlot`
+
+- [volcano.R](https://github.com/byandell/foundrShiny/blob/main/R/volcano.R)
+- [biplot.R](https://github.com/byandell/foundrShiny/blob/main/R/biplot.R)
+- [dotplot.R](https://github.com/byandell/foundrShiny/blob/main/R/dotplot.R)
+
+which are deployed in the `contrast` and `stats` panels via the
+following modules
+
+- [contrastSex.R](https://github.com/byandell/foundrShiny/blob/main/R/contrastSex.R):
+  contrasts of conditions across strains by sex
+- [contrastGroup.R](https://github.com/byandell/foundrShiny/blob/main/R/contrastGroup.R):
+  contrasts for groups of traits (such as WGCNA modules)
+- [stats.R](https://github.com/byandell/foundrShiny/blob/main/R/stats.R):
+  stats on design effects
+
+### Panel-specific Parameters (`panel_par`)
+
+Panel parameters are reused in different panels in slightly different
+ways. It made sense to allow these to let the user set these separately
+within each panel. **This is in development and not yet implemented.**
+Note that some modules have `input$trait` or `input$traits`. I have
+begun migrating to panelPar in `traitTable`.
+
+      panelParInput("panel_par"), # Strains, Facet
+      panelParUI("panel_par"), # Traits
+      panelParOutput("panel_par") # Sexes (B/F/M/C)
+
+Some parameters are passed as lists from one module to another. For
+instance, the `traitTable` module returns a - trait + traitTable:
+strains + traitSolos: facet + traitPairs: facet - stats + contrastPlot:
+sex - time + timePlot: strains, facet + timeTable: strains + timeTraits:
+contrast (traits) - contrast + contrastSex: sex + contrastTime:
+contrast, strains + timePlot: strains, facet + contrastGroup: sex,
+group + contrastPlot: sex, strain (via volcano?)
+
+Careful that contrastPlot and its sub-modules (volcano,biplot,dotplot)
+us rownames from plotPar, which is substitute for strain. Volcano may
+have wrong call for strain.
+
+## Panel sub-modules
+
+Panels deploy sub-modules, which in turn might deploy other sub-modules.
+By convention, each module has a Server and one or more of Input, UI,
+Output. Several sub-modules return reactive objects, which might be used
+by other sub-modules.
+
+### Trait module
+
+- traitOrder
+- traitNames (used twice)
+- corTable
+- corPlot
+- traitTable
+- traitSolos
+- traitPairs
+
+### Stats module
+
+- contrastPlot
+
+### Time module
+
+- timeTable
+  - traitOrder (reused from trait module)
+  - timeTraits
+- timePlot
+
+### Contrast module
+
+- contrastTable (used three times)
+  - traitOrder (reused from trait module)
+- contrastSex
+  - contrastPlot
+- contrastTime
+  - timeTraits
+- timePlot (reused from time module)
+- contrastGroup
+  - contrastPlot
+
+&nbsp;
+
+    foundrSetup(data_subset = "Physio",
+      dirpath = "~/Documents/Research/attie_alan/FounderDietStudy/deployLiver")
+
+# Package index
+
+## All functions
+
+- [`aboutApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/aboutApp.md)
+  [`aboutServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/aboutApp.md)
+  [`aboutOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/aboutApp.md)
+  : About App
+- [`biplotApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/biplotApp.md)
+  [`biplotServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/biplotApp.md)
+  [`biplotOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/biplotApp.md)
+  : BiPlot App
+- [`contrastApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastApp.md)
+  [`contrastServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastApp.md)
+  [`contrastInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastApp.md)
+  [`contrastUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastApp.md)
+  [`contrastOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastApp.md)
+  : Contrast Panel App
+- [`contrastGroupApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastGroupApp.md)
+  [`contrastGroupServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastGroupApp.md)
+  [`contrastGroupInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastGroupApp.md)
+  [`contrastGroupUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastGroupApp.md)
+  [`contrastGroupOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastGroupApp.md)
+  : Groups of Contrasts App
+- [`contrastPlotApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastPlotApp.md)
+  [`contrastPlotServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastPlotApp.md)
+  [`contrastPlotUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastPlotApp.md)
+  [`contrastPlotOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastPlotApp.md)
+  : Contrast Plots App
+- [`contrastTableApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastTableApp.md)
+  [`contrastTableServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastTableApp.md)
+  [`contrastTableUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastTableApp.md)
+  : Contrast Table App
+- [`contrastTimeApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastTimeApp.md)
+  [`contrastTimeServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastTimeApp.md)
+  [`contrastTimeInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastTimeApp.md)
+  [`contrastTimeUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastTimeApp.md)
+  : Contrasts over Time App
+- [`contrastTraitApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastTraitApp.md)
+  [`contrastTraitServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastTraitApp.md)
+  [`contrastTraitInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastTraitApp.md)
+  [`contrastTraitOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/contrastTraitApp.md)
+  : Contrast Trait Plots App
+- [`corPlotApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/corPlotApp.md)
+  [`corPlotServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/corPlotApp.md)
+  [`corPlotOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/corPlotApp.md)
+  : Correlation Plot App
+- [`corTableApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/corTableApp.md)
+  [`corTableServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/corTableApp.md)
+  [`corTableInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/corTableApp.md)
+  [`corTableOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/corTableApp.md)
+  : Correlation Table App
+- [`dotplotApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/dotplotApp.md)
+  [`dotplotServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/dotplotApp.md)
+  [`dotplotOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/dotplotApp.md)
+  : DotPlots App
+- [`downloadApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/downloadApp.md)
+  [`downloadServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/downloadApp.md)
+  [`downloadOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/downloadApp.md)
+  : Download App
+- [`entryApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/entryApp.md)
+  [`entryServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/entryApp.md)
+  [`entryInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/entryApp.md)
+  [`entryUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/entryApp.md)
+  [`entryOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/entryApp.md)
+  : Entry App for password
+- [`foundrApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/foundrApp.md)
+  [`foundrServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/foundrApp.md)
+  [`foundrInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/foundrApp.md)
+  [`foundrOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/foundrApp.md)
+  : foundr App for foundr package
+- [`foundrSetup()`](https://byandell-sysgen.github.io/foundrShiny/reference/foundrSetup.md)
+  : Setup Data for Foundr App
+- [`mainParApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/mainParApp.md)
+  [`mainParServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/mainParApp.md)
+  [`mainParInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/mainParApp.md)
+  [`mainParUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/mainParApp.md)
+  [`mainParOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/mainParApp.md)
+  : mainPar App
+- [`panelApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/panelApp.md)
+  [`panelServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/panelApp.md)
+  [`panelInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/panelApp.md)
+  [`panelOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/panelApp.md)
+  : panel App for foundr package
+- [`panelParApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/panelParApp.md)
+  [`panelParServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/panelParApp.md)
+  [`panelParInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/panelParApp.md)
+  [`panelParUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/panelParApp.md)
+  [`panelParOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/panelParApp.md)
+  : Panel Parameters App
+- [`plotParApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/plotParApp.md)
+  [`plotParServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/plotParApp.md)
+  [`plotParInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/plotParApp.md)
+  [`plotParUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/plotParApp.md)
+  [`plotParOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/plotParApp.md)
+  : Plot Parameters App
+- [`statsApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/statsApp.md)
+  [`statsServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/statsApp.md)
+  [`statsUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/statsApp.md)
+  [`statsOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/statsApp.md)
+  : Stats App
+- [`timeApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeApp.md)
+  [`timeServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeApp.md)
+  [`timeInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeApp.md)
+  [`timeUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeApp.md)
+  [`timeOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeApp.md)
+  : Times Panel App
+- [`timePlotApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/timePlotApp.md)
+  [`timePlotServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/timePlotApp.md)
+  [`timePlotOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/timePlotApp.md)
+  : Time Plots App
+- [`timeTableApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeTableApp.md)
+  [`timeTableServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeTableApp.md)
+  [`timeTableInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeTableApp.md)
+  [`timeTableUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeTableApp.md)
+  [`timeTableOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeTableApp.md)
+  : Times Tables App
+- [`timeTraitsApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeTraitsApp.md)
+  [`timeTraitsServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeTraitsApp.md)
+  [`timeTraitsInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeTraitsApp.md)
+  [`timeTraitsUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeTraitsApp.md)
+  [`timeTraitsOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/timeTraitsApp.md)
+  : Times Traits App
+- [`traitApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitApp.md)
+  [`traitServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitApp.md)
+  [`traitInput()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitApp.md)
+  [`traitUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitApp.md)
+  [`traitOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitApp.md)
+  : Trait Panel App
+- [`traitNamesApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitNamesApp.md)
+  [`traitNamesServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitNamesApp.md)
+  [`traitNamesUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitNamesApp.md)
+  : Trait Names App
+- [`traitOrderApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitOrderApp.md)
+  [`traitOrderServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitOrderApp.md)
+  [`traitOrderUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitOrderApp.md)
+  : Trait Order App
+- [`traitPairsApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitPairsApp.md)
+  [`traitPairsServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitPairsApp.md)
+  [`traitPairsOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitPairsApp.md)
+  : Trait Pairs App
+- [`traitSolosApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitSolosApp.md)
+  [`traitSolosServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitSolosApp.md)
+  [`traitSolosOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitSolosApp.md)
+  : Trait Solos App
+- [`traitTableApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitTableApp.md)
+  [`traitTableServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitTableApp.md)
+  [`traitTableUI()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitTableApp.md)
+  [`traitTableOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/traitTableApp.md)
+  : Trait Table App
+- [`volcanoApp()`](https://byandell-sysgen.github.io/foundrShiny/reference/volcanoApp.md)
+  [`volcanoServer()`](https://byandell-sysgen.github.io/foundrShiny/reference/volcanoApp.md)
+  [`volcanoOutput()`](https://byandell-sysgen.github.io/foundrShiny/reference/volcanoApp.md)
+  : Volcano Plot App
+
+# Articles
+
+### Developer Documentation
+
+- [foundrShiny Developer Guide Overview &
+  Architecture](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/index.md):
+- [foundrShiny Module Index & Design
+  Conventions](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/modules.md):
+- [Data Pipeline, Parameter Reactivity & Isolated
+  Testing](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/data_flow.md):

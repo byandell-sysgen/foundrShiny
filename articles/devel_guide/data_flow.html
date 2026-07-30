@@ -21,6 +21,12 @@
 </style>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("pre.mermaid").forEach(function(el) {
+      var code = el.querySelector("code");
+      if (code) {
+        el.textContent = code.textContent;
+      }
+    });
     mermaid.initialize({ startOnLoad: true });
   });
 </script>
@@ -157,9 +163,9 @@ across three distinct tiers:</p>
 <span><span class="va">panel_par</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/panelParApp.html">panelParServer</a></span><span class="op">(</span><span class="st">"panel_par"</span>, <span class="va">main_par</span>, <span class="va">traitSignal</span><span class="op">)</span></span>
 <span><span class="va">plot_par</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/plotParApp.html">plotParServer</a></span><span class="op">(</span><span class="st">"plot_par"</span>, <span class="va">contrast_table</span><span class="op">)</span></span></code></pre></div>
 <pre class="mermaid"><code>flowchart TD
-    main_par["main_par (Global Parameters)&lt;br/&gt;dataset, trait order, plot/table toggle, height"]
-    panel_par["panel_par (Panel Parameters)&lt;br/&gt;strains/genotypes, sex B/F/M/C, faceting, table mode"]
-    plot_par["plot_par (Plot Parameters)&lt;br/&gt;volcano volsd/volvert, interact toggle, row names"]
+    main_par["main_par (Global Parameters: dataset, trait order, plot or table toggle, height)"]
+    panel_par["panel_par (Panel Parameters: strains, genotypes, sex B/F/M/C, faceting)"]
+    plot_par["plot_par (Plot Parameters: volcano thresholds volsd and volvert, interact toggle, row names)"]
 
     main_par --&gt; panel_par
     panel_par --&gt; plot_par

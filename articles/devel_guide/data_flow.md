@@ -48,9 +48,9 @@ plot_par  <- plotParServer("plot_par", contrast_table)
 
 ``` mermaid
 flowchart TD
-    main_par["main_par (Global Parameters)<br/>dataset, trait order, plot/table toggle, height"]
-    panel_par["panel_par (Panel Parameters)<br/>strains/genotypes, sex B/F/M/C, faceting, table mode"]
-    plot_par["plot_par (Plot Parameters)<br/>volcano volsd/volvert, interact toggle, row names"]
+    main_par["main_par (Global Parameters: dataset, trait order, plot or table toggle, height)"]
+    panel_par["panel_par (Panel Parameters: strains, genotypes, sex B/F/M/C, faceting)"]
+    plot_par["plot_par (Plot Parameters: volcano thresholds volsd and volvert, interact toggle, row names)"]
 
     main_par --> panel_par
     panel_par --> plot_par

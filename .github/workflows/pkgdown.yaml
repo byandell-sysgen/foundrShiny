@@ -16,7 +16,6 @@ permissions:
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
-    only-group: default
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:

@@ -4,8 +4,15 @@
 #' @importFrom stringr str_remove
 #' @importFrom tidyr separate_wider_delim unite
 #' @importFrom foundr bestcor eigen_contrast eigen_traits
-#' @importFrom utils combn
+#' @importFrom utils combn globalVariables
 #' @importFrom shiny hr
+
+utils::globalVariables(c(
+  "customSettings", "dataset", "datatraits", "dropped", "kME",
+  "module", "p.value", "sex", "size", "strain", "timetrait",
+  "trait", "traitData", "traitModule", "traitSignal", "traitStats",
+  "traitStatsTime"
+))
 
 # Border Line
 border_line <- function() {

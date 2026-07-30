@@ -7,6 +7,7 @@
 #' @return reactive object 
 #'
 #' @importFrom shiny column fluidRow moduleServer NS observeEvent radioButtons reactive reactiveVal reactiveValues renderUI req selectInput tagList uiOutput updateSelectInput
+#' @importFrom stats biplot
 #' @importFrom DT renderDataTable
 #' @importFrom foundr ggplot_conditionContrasts summary_conditionContrasts summary_strainstats
 #' @export

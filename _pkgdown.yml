@@ -1,0 +1,42 @@
+url: https://byandell-sysgen.github.io/foundrShiny
+
+template:
+  bootstrap: 5
+  includes:
+    in_header: |
+      <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+      <style>
+        pre.mermaid {
+          background: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
+          text-align: center;
+        }
+      </style>
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          mermaid.initialize({ startOnLoad: true });
+        });
+      </script>
+
+navbar:
+  structure:
+    left: [intro, reference, articles]
+    right: [search, github]
+  components:
+    articles:
+      text: Articles
+      menu:
+        - text: "Developer Guide Overview & Architecture"
+          href: articles/devel_guide/index.html
+        - text: "Module Index & Design Conventions"
+          href: articles/devel_guide/modules.html
+        - text: "Data Pipeline & Parameter Reactivity"
+          href: articles/devel_guide/data_flow.html
+
+articles:
+  - title: "Developer Documentation"
+    contents:
+      - "devel_guide/index"
+      - "devel_guide/modules"
+      - "devel_guide/data_flow"

@@ -42,48 +42,45 @@ The ~30 package modules are grouped into 8 functional categories. Below is a hig
 
 ```mermaid
 flowchart TD
-    subgraph Infra["1. Application Infrastructure"]
-        app["foundrApp & panelServer"]
-        entry["entryServer (Auth)"]
-        download["downloadApp"]
-    end
+    foundrApp["foundrApp / foundrServer"]
+    panelServer["panelServer (5-Tab Router)"]
 
-    subgraph Params["2. Parameter Tier Modules"]
-        params["mainPar, panelPar, plotPar"]
-    end
+    mainParServer["mainParServer (Global Parameters)"]
 
     subgraph Panels["Tab Panels (3-6)"]
-        trait["3. Trait Panel"]
-        contrast["4. Contrast Panel"]
-        stats["5. Stats Panel"]
-        time["6. Time Panel"]
-        about["About Panel"]
+        traitServer["3. Trait Panel (traitServer)"]
+        contrastServer["4. Contrast Panel (contrastServer)"]
+        statsServer["5. Stats Panel (statsServer)"]
+        timeServer["6. Time Panel (timeServer)"]
+        aboutServer["About Panel (aboutServer)"]
     end
 
     subgraph Plots["7. Plot Sub-Modules"]
         plotMods["biplotApp, dotplotApp, volcanoApp"]
     end
 
-    app --> entry
-    app --> params
-    app --> trait
-    app --> contrast
-    app --> stats
-    app --> time
-    app --> about
-    app --> download
+    foundrApp --> panelServer
 
-    contrast --> plotMods
-    stats --> plotMods
+    panelServer --> mainParServer
+    panelServer --> traitServer
+    panelServer --> contrastServer
+    panelServer --> statsServer
+    panelServer --> timeServer
+    panelServer --> aboutServer
 
-    classDef infra fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
+    contrastServer --> plotMods
+    statsServer --> plotMods
+
+    classDef entry fill:#1f77b4,stroke:#333,stroke-width:2px,color:#fff
+    classDef router fill:#ff7f0e,stroke:#333,stroke-width:2px,color:#fff
     classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
     classDef panel fill:#d62728,stroke:#333,stroke-width:2px,color:#fff
     classDef plot fill:#8c564b,stroke:#333,stroke-width:2px,color:#fff
 
-    class app,entry,download infra
-    class params param
-    class trait,contrast,stats,time,about panel
+    class foundrApp entry
+    class panelServer router
+    class mainParServer param
+    class traitServer,contrastServer,statsServer,timeServer,aboutServer panel
     class plotMods plot
 ```
 

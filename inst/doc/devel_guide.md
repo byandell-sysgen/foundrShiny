@@ -50,7 +50,7 @@ Created a 3-part R Markdown article suite under `vignettes/devel_guide/`:
 - **[`vignettes/devel_guide/modules.Rmd`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/vignettes/devel_guide/modules.Rmd)**:
   - 5-function Shiny module design pattern documentation and exhaustive 8-category breakdown of all ~30 package modules.
 - **[`vignettes/devel_guide/data_flow.Rmd`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/vignettes/devel_guide/data_flow.Rmd)**:
-  - Details on `foundrSetup()`, global runtime data objects (`traitData`, `traitSignal`, `traitStats`, `traitModule`, `customSettings`), three-tier reactive parameter scoping (`main_par`, `panel_par`, `plot_par`), and unit testing with `*App()` test functions.
+  - Details on `foundrSetup()`, global runtime data objects (`traitData`, `traitSignal`, `traitStats`, `traitModule`, `customSettings`), three-tier reactive parameter scoping (`main_par`, `panel_par`, `plot_par`) illustrated with a `mermaid` flowchart, and unit testing with `*App()` test functions.
 - **Obsolete `vignettes/foundrShiny.Rmd` Integration**:
   - Reviewed legacy `vignettes/foundrShiny.Rmd` file moved from `../foundr`.
   - Merged salvageable insights (WGCNA vs. Shiny module terminology distinction in `modules.Rmd` and parameter persistence/scoping notes in `data_flow.Rmd`) into `vignettes/devel_guide/`.

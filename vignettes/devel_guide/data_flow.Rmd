@@ -54,23 +54,17 @@ panel_par <- panelParServer("panel_par", main_par, traitSignal)
 plot_par  <- plotParServer("plot_par", contrast_table)
 ```
 
-```
-       +--------------------------------------------------------+
-       |               main_par (Global Parameters)            |
-       |  (dataset, trait order, plot/table toggle, height)     |
-       +---------------------------+----------------------------+
-                                   |
-                                   v
-       +--------------------------------------------------------+
-       |             panel_par (Panel Parameters)              |
-       |  (strains/genotypes, sex B/F/M/C, faceting, table mode) |
-       +---------------------------+----------------------------+
-                                   |
-                                   v
-       +--------------------------------------------------------+
-       |              plot_par (Plot Parameters)                |
-       |   (volcano volsd/volvert, interact toggle, row names)  |
-       +--------------------------------------------------------+
+```mermaid
+flowchart TD
+    main_par["main_par (Global Parameters)<br/>dataset, trait order, plot/table toggle, height"]
+    panel_par["panel_par (Panel Parameters)<br/>strains/genotypes, sex B/F/M/C, faceting, table mode"]
+    plot_par["plot_par (Plot Parameters)<br/>volcano volsd/volvert, interact toggle, row names"]
+
+    main_par --> panel_par
+    panel_par --> plot_par
+
+    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
+    class main_par,panel_par,plot_par param
 ```
 
 ### Parameter Persistence & Sub-Panel Reactivity

@@ -36,7 +36,7 @@ Created [`DEVELOPER.md`](file:///Users/brianyandell/Documents/Research/byandell-
 
 Inspected `R/*.R` source files and package namespace dependencies:
 
-- Fixed missing `bslib` dependency in [`DESCRIPTION`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/DESCRIPTION).
+- Fixed missing `bslib` dependency and added `Remotes: byandell/foundr@foundrBase` for GitHub Actions dependency resolution in [`DESCRIPTION`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/DESCRIPTION).
 - Added `stats::biplot` import in [`R/biplotApp.R`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/R/biplotApp.R).
 - Added `globalVariables()` declarations in [`R/foundr_helpers.R`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/R/foundr_helpers.R) to resolve R CMD check warnings for non-standard evaluation variables and global app objects.
 
@@ -56,8 +56,9 @@ Created a 3-part R Markdown article suite under `vignettes/devel_guide/`:
 Created [`_pkgdown.yml`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/_pkgdown.yml) in package root:
 
 - Configured Bootstrap 5 theme.
-- Added Mermaid.js CDN script injection in `template.includes.in_header` to automatically render `mermaid` diagrams on `pkgdown` website pages.
+- Added Mermaid.js CDN script injection in `template.includes.in_header` to automatically render `mermaid` flowcharts on `pkgdown` site pages.
 - Grouped developer articles under `"devel_guide/index"`, `"devel_guide/modules"`, and `"devel_guide/data_flow"`.
+- Ensured all `.Rmd` vignettes under `vignettes/` are indexed under `articles:` to prevent `pkgdown` missing vignette build errors.
 
 ### Step 5: `.Rbuildignore` & `.nojekyll` Setup
 

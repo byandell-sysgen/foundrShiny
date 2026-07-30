@@ -22,7 +22,7 @@ install.packages(c("devtools", "roxygen2", "testthat", "pkgload"))
 
 ### Dependency Installation
 
-`foundrShiny` relies on the `foundr` analysis package (specifically the `foundrBase` branch):
+`foundrShiny` relies on the `foundr` analysis package (specifically the `foundrBase` branch). This non-CRAN dependency is declared in `DESCRIPTION` via `Remotes: byandell/foundr@foundrBase` for automated CI/CD resolution.
 
 ```r
 # Install core foundr dependency

@@ -236,6 +236,8 @@
 <ul><li>
 <strong>Explicit Package Namespacing:</strong> Use <code>pkg::func()</code> for all imported functions (e.g., <code><a href="https://rdrr.io/pkg/shiny/man/moduleServer.html" class="external-link">shiny::moduleServer()</a></code>, <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot2::ggplot()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code>) to prevent namespace collisions.</li>
 <li>
+<strong>Explicit Package Imports (No Meta-Packages):</strong> Avoid meta-packages like <code><a href="https://tidyverse.tidyverse.org" class="external-link">library(tidyverse)</a></code> in vignettes, source functions, or test scripts. Use explicit package imports (<code><a href="https://dplyr.tidyverse.org" class="external-link">library(dplyr)</a></code>, <code><a href="https://ggplot2.tidyverse.org" class="external-link">library(ggplot2)</a></code>, etc.) to minimize dependency overhead and prevent build failures.</li>
+<li>
 <strong>Safe Vector Subsetting in R:</strong> When stripping or filtering R comments, ALWAYS use <code>grepl("^\\s*#'", lines)</code> with <code>!grepl(...)</code> or <code>grep(..., invert = TRUE)</code>. Avoid using <code>!grep(...)</code> which can evaluate to logical <code>FALSE</code> and unexpectedly empty atomic vectors to <code>character(0)</code>.</li>
 <li>
 <strong>Roxygen Documentation:</strong> Document exported functions using <code>#'</code> blocks in <code>R/*.R</code> files and maintain clear parameter descriptions.</li>

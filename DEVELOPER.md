@@ -230,6 +230,12 @@ foundrShiny::foundrApp()
   [`ggplot2::ggplot()`](https://ggplot2.tidyverse.org/reference/ggplot.html),
   [`dplyr::filter()`](https://dplyr.tidyverse.org/reference/filter.html))
   to prevent namespace collisions.
+- **Explicit Package Imports (No Meta-Packages):** Avoid meta-packages
+  like [`library(tidyverse)`](https://tidyverse.tidyverse.org) in
+  vignettes, source functions, or test scripts. Use explicit package
+  imports ([`library(dplyr)`](https://dplyr.tidyverse.org),
+  [`library(ggplot2)`](https://ggplot2.tidyverse.org), etc.) to minimize
+  dependency overhead and prevent build failures.
 - **Safe Vector Subsetting in R:** When stripping or filtering R
   comments, ALWAYS use `grepl("^\\s*#'", lines)` with `!grepl(...)` or
   `grep(..., invert = TRUE)`. Avoid using `!grep(...)` which can

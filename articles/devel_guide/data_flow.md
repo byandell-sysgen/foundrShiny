@@ -63,6 +63,28 @@ plot_par  <- plotParServer("plot_par", contrast_table)
            |   (volcano volsd/volvert, interact toggle, row names)  |
            +--------------------------------------------------------+
 
+#### Parameter Persistence & Sub-Panel Reactivity
+
+Managing input persistence across Shiny modules requires careful scoping
+using [`reactiveVal()`](https://rdrr.io/pkg/shiny/man/reactiveVal.html)
+and namespaced inputs:
+
+- **Top-Level Parameter Flow**: `main_par$dataset` is passed from
+  `mainParServer` to each panel module.
+- **Panel Scoping**: Local selections (e.g., `keydataset` inside
+  `traitOrderApp`) use
+  [`reactiveVal()`](https://rdrr.io/pkg/shiny/man/reactiveVal.html) to
+  maintain state while navigating sub-panels within the same tab.
+- **Sub-Panel Parameter Sharing**:
+  - In `contrastServer`, selection changes in the `Sex` sub-panel
+    persist when switching to the `Group`/`Module` sub-panel (and
+    vice-versa).
+  - In `traitServer`, selecting a `key` trait updates choices available
+    for `related` traits via `traitNamesApp`.
+- **Cross-Tab Behavior**: Switching top-level tab panels re-evaluates
+  scoped panel parameters against global defaults unless explicitly
+  wired to `main_par`.
+
 ------------------------------------------------------------------------
 
 ### Unit Testing with Standalone Module Apps

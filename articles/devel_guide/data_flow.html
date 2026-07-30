@@ -44,11 +44,11 @@
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Guides</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-guides">
 <li><a class="dropdown-item" href="../../articles/devel_guide/index.html">Developer Guide Overview &amp; Architecture</a></li>
-    <li><a class="dropdown-item" href="../../articles/devel_guide/modules.html">Module Index &amp; Design Conventions</a></li>
-    <li><a class="dropdown-item" href="../../articles/devel_guide/data_flow.html">Data Pipeline &amp; Parameter Reactivity</a></li>
+    <li><a class="dropdown-item" href="../../articles/devel_guide/modules.html">  Module Index &amp; Design Conventions</a></li>
+    <li><a class="dropdown-item" href="../../articles/devel_guide/data_flow.html">  Data Pipeline &amp; Parameter Reactivity</a></li>
   </ul>
 </li>
       </ul>
@@ -172,7 +172,39 @@ across three distinct tiers:</p>
        |              plot_par (Plot Parameters)                |
        |   (volcano volsd/volvert, interact toggle, row names)  |
        +--------------------------------------------------------+</code></pre>
+<div class="section level4">
+<h4 id="parameter-persistence-sub-panel-reactivity">Parameter Persistence &amp; Sub-Panel Reactivity<a class="anchor" aria-label="anchor" href="#parameter-persistence-sub-panel-reactivity"></a>
+</h4>
+<p>Managing input persistence across Shiny modules requires careful
+scoping using <code><a href="https://rdrr.io/pkg/shiny/man/reactiveVal.html" class="external-link">reactiveVal()</a></code> and namespaced inputs:</p>
+<ul>
+<li>
+<strong>Top-Level Parameter Flow</strong>:
+<code>main_par$dataset</code> is passed from <code>mainParServer</code>
+to each panel module.</li>
+<li>
+<strong>Panel Scoping</strong>: Local selections (e.g.,
+<code>keydataset</code> inside <code>traitOrderApp</code>) use
+<code><a href="https://rdrr.io/pkg/shiny/man/reactiveVal.html" class="external-link">reactiveVal()</a></code> to maintain state while navigating sub-panels
+within the same tab.</li>
+<li>
+<strong>Sub-Panel Parameter Sharing</strong>:
+<ul>
+<li>In <code>contrastServer</code>, selection changes in the
+<code>Sex</code> sub-panel persist when switching to the
+<code>Group</code>/<code>Module</code> sub-panel (and vice-versa).</li>
+<li>In <code>traitServer</code>, selecting a <code>key</code> trait
+updates choices available for <code>related</code> traits via
+<code>traitNamesApp</code>.</li>
+</ul>
+</li>
+<li>
+<strong>Cross-Tab Behavior</strong>: Switching top-level tab panels
+re-evaluates scoped panel parameters against global defaults unless
+explicitly wired to <code>main_par</code>.</li>
+</ul>
 <hr>
+</div>
 </div>
 <div class="section level3">
 <h3 id="unit-testing-with-standalone-module-apps">Unit Testing with Standalone Module Apps<a class="anchor" aria-label="anchor" href="#unit-testing-with-standalone-module-apps"></a>

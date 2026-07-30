@@ -1,6 +1,6 @@
 # Articles
 
-### Developer Documentation
+### Developer Guides
 
 - [foundrShiny Developer Guide Overview &
   Architecture](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/index.md):

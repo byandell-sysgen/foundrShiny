@@ -44,11 +44,11 @@
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Guides</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-guides">
 <li><a class="dropdown-item" href="../../articles/devel_guide/index.html">Developer Guide Overview &amp; Architecture</a></li>
-    <li><a class="dropdown-item" href="../../articles/devel_guide/modules.html">Module Index &amp; Design Conventions</a></li>
-    <li><a class="dropdown-item" href="../../articles/devel_guide/data_flow.html">Data Pipeline &amp; Parameter Reactivity</a></li>
+    <li><a class="dropdown-item" href="../../articles/devel_guide/modules.html">  Module Index &amp; Design Conventions</a></li>
+    <li><a class="dropdown-item" href="../../articles/devel_guide/data_flow.html">  Data Pipeline &amp; Parameter Reactivity</a></li>
   </ul>
 </li>
       </ul>
@@ -126,6 +126,20 @@ up to 5 standard exported functions:</p>
 </tr>
 </tbody>
 </table>
+<blockquote>
+<p>[!NOTE] <strong>Terminology Distinction: Shiny Modules vs. WGCNA
+Trait Modules</strong> In <code>foundrShiny</code>, the term
+<em>module</em> is used in two distinct contexts: 1. <strong>Shiny
+Modules</strong>: Encapsulated UI, server logic, and reactive state
+functions constructed using Shiny’s <code><a href="https://rdrr.io/pkg/shiny/man/moduleServer.html" class="external-link">moduleServer()</a></code> (e.g.,
+<code>contrastGroupServer</code>, <code>traitServer</code>). 2.
+<strong>WGCNA Trait Modules</strong>: Statistical groupings of
+correlated phenotypic traits identified via weighted gene co-expression
+network analysis (WGCNA). The <code>contrastGroupApp.R</code> Shiny
+module specifically visualizes WGCNA eigentraits (<code>eigens()</code>)
+and individual traits (<code>traits()</code>) belonging to WGCNA
+modules.</p>
+</blockquote>
 <hr>
 </div>
 <div class="section level3">

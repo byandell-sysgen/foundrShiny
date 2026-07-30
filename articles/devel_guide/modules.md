@@ -16,6 +16,18 @@ component file in `R/` defines up to 5 standard exported functions:
 | `*Server(id, ...)` | Server logic holding reactive expressions and observers | `volcanoServer("volcano", ...)` |
 | `*App(...)` | Standalone test application runner for isolated module testing | `corTableApp(traitSignal)` |
 
+> \[!NOTE\] **Terminology Distinction: Shiny Modules vs. WGCNA Trait
+> Modules** In `foundrShiny`, the term *module* is used in two distinct
+> contexts: 1. **Shiny Modules**: Encapsulated UI, server logic, and
+> reactive state functions constructed using Shiny’s
+> [`moduleServer()`](https://rdrr.io/pkg/shiny/man/moduleServer.html)
+> (e.g., `contrastGroupServer`, `traitServer`). 2. **WGCNA Trait
+> Modules**: Statistical groupings of correlated phenotypic traits
+> identified via weighted gene co-expression network analysis (WGCNA).
+> The `contrastGroupApp.R` Shiny module specifically visualizes WGCNA
+> eigentraits (`eigens()`) and individual traits (`traits()`) belonging
+> to WGCNA modules.
+
 ------------------------------------------------------------------------
 
 ### Complete Module Categorization

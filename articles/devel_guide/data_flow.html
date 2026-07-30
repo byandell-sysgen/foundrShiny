@@ -156,22 +156,16 @@ across three distinct tiers:</p>
 <span><span class="va">main_par</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/mainParApp.html">mainParServer</a></span><span class="op">(</span><span class="st">"main_par"</span>, <span class="va">traitSignal</span><span class="op">)</span></span>
 <span><span class="va">panel_par</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/panelParApp.html">panelParServer</a></span><span class="op">(</span><span class="st">"panel_par"</span>, <span class="va">main_par</span>, <span class="va">traitSignal</span><span class="op">)</span></span>
 <span><span class="va">plot_par</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/plotParApp.html">plotParServer</a></span><span class="op">(</span><span class="st">"plot_par"</span>, <span class="va">contrast_table</span><span class="op">)</span></span></code></pre></div>
-<pre><code>       +--------------------------------------------------------+
-       |               main_par (Global Parameters)            |
-       |  (dataset, trait order, plot/table toggle, height)     |
-       +---------------------------+----------------------------+
-                                   |
-                                   v
-       +--------------------------------------------------------+
-       |             panel_par (Panel Parameters)              |
-       |  (strains/genotypes, sex B/F/M/C, faceting, table mode) |
-       +---------------------------+----------------------------+
-                                   |
-                                   v
-       +--------------------------------------------------------+
-       |              plot_par (Plot Parameters)                |
-       |   (volcano volsd/volvert, interact toggle, row names)  |
-       +--------------------------------------------------------+</code></pre>
+<pre class="mermaid"><code>flowchart TD
+    main_par["main_par (Global Parameters)&lt;br/&gt;dataset, trait order, plot/table toggle, height"]
+    panel_par["panel_par (Panel Parameters)&lt;br/&gt;strains/genotypes, sex B/F/M/C, faceting, table mode"]
+    plot_par["plot_par (Plot Parameters)&lt;br/&gt;volcano volsd/volvert, interact toggle, row names"]
+
+    main_par --&gt; panel_par
+    panel_par --&gt; plot_par
+
+    classDef param fill:#2ca02c,stroke:#333,stroke-width:2px,color:#fff
+    class main_par,panel_par,plot_par param</code></pre>
 <div class="section level4">
 <h4 id="parameter-persistence-sub-panel-reactivity">Parameter Persistence &amp; Sub-Panel Reactivity<a class="anchor" aria-label="anchor" href="#parameter-persistence-sub-panel-reactivity"></a>
 </h4>

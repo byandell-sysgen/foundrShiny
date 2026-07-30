@@ -1,22 +1,26 @@
 # Creating the foundrShiny Developer Guide
 
-This document records the step-by-step process, prompts, blueprint references, and design decisions used to create the `foundrShiny` developer guide vignette suite (`vignettes/devel_guide/`) and `pkgdown` website configuration.
+This document records the step-by-step process, prompts, blueprint references, design decisions, and build/deployment procedures used to create the `foundrShiny` developer guide vignette suite (`vignettes/devel_guide/`), root `DEVELOPER.md`, and `pkgdown` website configuration.
 
 ---
 
 ## 1. User Prompt & Blueprint Context
 
-### Original User Prompt
-```text
-Using `~/Documents/GitHub/Documentation/{prompts/devel_guide,github/pkgdown}.md` and `~/Documents/GitHub/Documentation/ShinyApps.md#foundrshiny-pragmatic-code-reuse-driven-by-collaborators` as blueprints, create `vignettes/devel_guide` complete with `mermaid` flowchart of modules.
-```
+### Original User Prompts
+
+**Prompts:**
+
+- Create a DEVELOPER.md file for this project
+- Using `~/Documents/GitHub/Documentation/{prompts/devel_guide,github/pkgdown}.md` and
+`~/Documents/GitHub/Documentation/ShinyApps.md#foundrshiny-pragmatic-code-reuse-driven-by-collaborators`
+as blueprints, create `vignettes/devel_guide` complete with `mermaid` flowchart of modules.
 
 ### Reference Blueprints Used
 
 1. **`~/Documents/GitHub/Documentation/prompts/devel_guide.md`**:
-   - Outlined master index structure (`vignettes/DeveloperGuide.Rmd` / `vignettes/devel_guide/index.Rmd`), sub-module guides, layout conventions, and `pkgdown` article integration.
+   - Outlined master index structure (`vignettes/devel_guide/index.Rmd`), sub-module guides, layout conventions, and `pkgdown` article integration.
 2. **`~/Documents/GitHub/Documentation/github/pkgdown.md`**:
-   - Outlined `_pkgdown.yml` configuration, article grouping rules (including quoting subdirectory paths like `"devel_guide/index"`), `.Rbuildignore` anchored exclusions, and `mermaid.js` script header injection (`template.includes.in_header`).
+   - Outlined `_pkgdown.yml` configuration, article grouping rules (including quoting subdirectory paths like `"devel_guide/index"`), `.Rbuildignore` anchored exclusions, `.nojekyll` creation, and `mermaid.js` script header injection (`template.includes.in_header`).
 3. **`~/Documents/GitHub/Documentation/ShinyApps.md#foundrshiny-pragmatic-code-reuse-driven-by-collaborators`**:
    - Provided the definitive ~30 module breakdown for `foundrShiny`, mapping module categories (infrastructure, parameter tiers, trait/contrast/stats/time panels, plot sub-modules, non-app helpers) and the exact module calling hierarchy.
 
@@ -24,49 +28,76 @@ Using `~/Documents/GitHub/Documentation/{prompts/devel_guide,github/pkgdown}.md`
 
 ## 2. Process & Step-by-Step Implementation
 
-### Step 1: Architectural Analysis of `foundrShiny`
-Inspected `R/*.R` files and `AGENTS.md` to map out function naming patterns (`*Input`, `*UI`, `*Output`, `*Server`, `*App`) and module relationships across the 5 tab panels.
+### Step 1: Root Reference File (`DEVELOPER.md`)
 
-### Step 2: Creation of `vignettes/devel_guide/` Suite
+Created [`DEVELOPER.md`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/DEVELOPER.md) in the project root to serve as an in-repo entry point detailing setup commands, the 5-function Shiny module design pattern, parameter scoping, runtime global data objects, and deployment guidelines.
+
+### Step 2: Architectural Analysis & Code Audit
+
+Inspected `R/*.R` source files and package namespace dependencies:
+
+- Fixed missing `bslib` dependency in [`DESCRIPTION`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/DESCRIPTION).
+- Added `stats::biplot` import in [`R/biplotApp.R`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/R/biplotApp.R).
+- Added `globalVariables()` declarations in [`R/foundr_helpers.R`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/R/foundr_helpers.R) to resolve R CMD check warnings for non-standard evaluation variables and global app objects.
+
+### Step 3: Creation of `vignettes/devel_guide/` Suite
+
 Created a 3-part R Markdown article suite under `vignettes/devel_guide/`:
 
 - **[`vignettes/devel_guide/index.Rmd`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/vignettes/devel_guide/index.Rmd)**:
-  - Master index article providing package purpose, companion package mapping (`foundr`, `foundrHarmony`, `modulr`), local developer quick start commands, and a full visual `mermaid` reactivity flowchart of all modules.
+  - Master index article providing package purpose, companion package mapping (`foundr`, `foundrHarmony`, `modulr`), local developer quick start commands, and a full visual `mermaid` reactivity flowchart of all ~30 modules.
 - **[`vignettes/devel_guide/modules.Rmd`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/vignettes/devel_guide/modules.Rmd)**:
   - 5-function Shiny module design pattern documentation and exhaustive 8-category breakdown of all ~30 package modules.
 - **[`vignettes/devel_guide/data_flow.Rmd`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/vignettes/devel_guide/data_flow.Rmd)**:
   - Details on `foundrSetup()`, global runtime data objects (`traitData`, `traitSignal`, `traitStats`, `traitModule`, `customSettings`), three-tier reactive parameter scoping (`main_par`, `panel_par`, `plot_par`), and unit testing with `*App()` test functions.
 
-### Step 3: `_pkgdown.yml` & Mermaid.js Integration
-Created `_pkgdown.yml` in package root:
+### Step 4: `_pkgdown.yml` & Mermaid.js Integration
+
+Created [`_pkgdown.yml`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/_pkgdown.yml) in package root:
+
 - Configured Bootstrap 5 theme.
 - Added Mermaid.js CDN script injection in `template.includes.in_header` to automatically render `mermaid` diagrams on `pkgdown` website pages.
 - Grouped developer articles under `"devel_guide/index"`, `"devel_guide/modules"`, and `"devel_guide/data_flow"`.
 
-### Step 4: `.Rbuildignore` & Build Exclusion Hygiene
-Updated `.Rbuildignore` with anchored regex exclusions:
-```regex
-^\.Rproj\.user$
-^\.Rhistory$
-^foundrShiny\.Rproj$
-^_pkgdown\.yml$
-^\.github$
-^docs$
-```
+### Step 5: `.Rbuildignore` & `.nojekyll` Setup
+
+- Updated [`.Rbuildignore`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/.Rbuildignore) with anchored regex exclusions (`^_pkgdown\.yml$`, `^\.github$`, `^docs$`).
+- Created [`docs/.nojekyll`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/docs/.nojekyll) to ensure GitHub Pages does not ignore underscore asset folders.
 
 ---
 
-## 3. Verification Commands
+## 3. GitHub Pages & Website Publishing
 
-The developer guide suite can be compiled and verified using standard R developer tools:
+When `pkgdown::build_site()` runs, it compiles static HTML files into `docs/`:
+
+- **Main Developer Guide & Mermaid Flowchart**: `articles/devel_guide/index.html`
+- **Module Index & Design Conventions**: `articles/devel_guide/modules.html`
+- **Data Pipeline & Reactivity**: `articles/devel_guide/data_flow.html`
+- **Articles Landing Page**: `articles/index.html`
+
+### GitHub Pages Configuration
+
+To serve the site from the `main` branch when `pkgdown` builds into `docs/`:
+
+1. In GitHub Repository Settings -> **Pages**.
+2. Set **Branch**: `main` and **Folder**: `/docs`.
+
+---
+
+## 4. Verification Commands
+
+The developer guide suite and package site can be built and verified locally:
 
 ```r
-# Build vignettes
-devtools::build_vignettes()
+# Generate documentation and NAMESPACE
+devtools::document()
 
-# Build full pkgdown site
-pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
+# Compile vignettes / pkgdown articles
+pkgdown::build_articles()
 
-# Package check
+# Build full pkgdown site into docs/
+pkgdown::build_site(install = FALSE)
+
+# Run package checks
 devtools::check(cran = FALSE, vignettes = FALSE)
 ```

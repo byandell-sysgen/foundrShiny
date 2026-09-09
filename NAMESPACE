@@ -119,100 +119,118 @@ export(traitUI)
 export(volcanoApp)
 export(volcanoOutput)
 export(volcanoServer)
-importFrom(DT,dataTableOutput)
-importFrom(DT,renderDataTable)
+importFrom(DT,
+  dataTableOutput,
+  renderDataTable
+)
 importFrom(bslib,page)
-importFrom(dplyr,across)
-importFrom(dplyr,arrange)
-importFrom(dplyr,as_tibble)
-importFrom(dplyr,bind_rows)
-importFrom(dplyr,distinct)
-importFrom(dplyr,everything)
-importFrom(dplyr,filter)
-importFrom(dplyr,left_join)
-importFrom(dplyr,mutate)
-importFrom(dplyr,rename)
-importFrom(dplyr,select)
-importFrom(foundr,bestcor)
-importFrom(foundr,conditionContrasts)
-importFrom(foundr,eigen_contrast)
-importFrom(foundr,eigen_traits)
-importFrom(foundr,ggplot_bestcor)
-importFrom(foundr,ggplot_conditionContrasts)
-importFrom(foundr,ggplot_traitPairs)
-importFrom(foundr,ggplot_traitSolos)
-importFrom(foundr,ggplot_traitTimes)
-importFrom(foundr,is_bestcor)
-importFrom(foundr,subset_trait_names)
-importFrom(foundr,summary_bestcor)
-importFrom(foundr,summary_conditionContrasts)
-importFrom(foundr,summary_strainstats)
-importFrom(foundr,timetraits)
-importFrom(foundr,timetraitsall)
-importFrom(foundr,traitPairs)
-importFrom(foundr,traitSolos)
-importFrom(foundr,traitTimes)
-importFrom(foundr,unite_datatraits)
+importFrom(dplyr,
+  across,
+  arrange,
+  as_tibble,
+  bind_rows,
+  distinct,
+  everything,
+  filter,
+  left_join,
+  mutate,
+  rename,
+  select
+)
+importFrom(foundr,
+  bestcor,
+  conditionContrasts,
+  eigen_contrast,
+  eigen_traits,
+  ggplot_bestcor,
+  ggplot_conditionContrasts,
+  ggplot_traitPairs,
+  ggplot_traitSolos,
+  ggplot_traitTimes,
+  is_bestcor,
+  subset_trait_names,
+  summary_bestcor,
+  summary_conditionContrasts,
+  summary_strainstats,
+  timetraits,
+  timetraitsall,
+  traitPairs,
+  traitSolos,
+  traitTimes,
+  unite_datatraits
+)
 importFrom(ggplot2,ylim)
-importFrom(grDevices,dev.off)
-importFrom(grDevices,pdf)
-importFrom(plotly,ggplotly)
-importFrom(plotly,plotlyOutput)
-importFrom(plotly,renderPlotly)
+importFrom(grDevices,
+  dev.off,
+  pdf
+)
+importFrom(plotly,
+  ggplotly,
+  plotlyOutput,
+  renderPlotly
+)
 importFrom(rlang,.data)
-importFrom(shiny,NS)
-importFrom(shiny,a)
-importFrom(shiny,bootstrapPage)
-importFrom(shiny,br)
-importFrom(shiny,checkboxGroupInput)
-importFrom(shiny,checkboxInput)
-importFrom(shiny,column)
-importFrom(shiny,debounce)
-importFrom(shiny,downloadButton)
-importFrom(shiny,downloadHandler)
-importFrom(shiny,fluidPage)
-importFrom(shiny,fluidRow)
-importFrom(shiny,h3)
-importFrom(shiny,h4)
-importFrom(shiny,hideTab)
-importFrom(shiny,hr)
-importFrom(shiny,includeMarkdown)
-importFrom(shiny,isTruthy)
-importFrom(shiny,mainPanel)
-importFrom(shiny,moduleServer)
-importFrom(shiny,observeEvent)
-importFrom(shiny,passwordInput)
-importFrom(shiny,plotOutput)
-importFrom(shiny,radioButtons)
-importFrom(shiny,reactive)
-importFrom(shiny,reactiveVal)
-importFrom(shiny,reactiveValues)
-importFrom(shiny,renderPlot)
-importFrom(shiny,renderText)
-importFrom(shiny,renderUI)
-importFrom(shiny,req)
-importFrom(shiny,selectInput)
-importFrom(shiny,selectizeInput)
-importFrom(shiny,shinyApp)
-importFrom(shiny,showTab)
-importFrom(shiny,sidebarLayout)
-importFrom(shiny,sidebarPanel)
-importFrom(shiny,sliderInput)
-importFrom(shiny,strong)
-importFrom(shiny,tagList)
-importFrom(shiny,textAreaInput)
-importFrom(shiny,titlePanel)
-importFrom(shiny,uiOutput)
-importFrom(shiny,updateSelectInput)
-importFrom(shiny,updateSelectizeInput)
-importFrom(shiny,updateTabsetPanel)
+importFrom(shiny,
+  NS,
+  a,
+  bootstrapPage,
+  br,
+  checkboxGroupInput,
+  checkboxInput,
+  column,
+  debounce,
+  downloadButton,
+  downloadHandler,
+  fluidPage,
+  fluidRow,
+  h3,
+  h4,
+  hideTab,
+  hr,
+  includeMarkdown,
+  isTruthy,
+  mainPanel,
+  moduleServer,
+  observeEvent,
+  passwordInput,
+  plotOutput,
+  radioButtons,
+  reactive,
+  reactiveVal,
+  reactiveValues,
+  renderPlot,
+  renderText,
+  renderUI,
+  req,
+  selectInput,
+  selectizeInput,
+  shinyApp,
+  showTab,
+  sidebarLayout,
+  sidebarPanel,
+  sliderInput,
+  strong,
+  tagList,
+  textAreaInput,
+  titlePanel,
+  uiOutput,
+  updateSelectInput,
+  updateSelectizeInput,
+  updateTabsetPanel
+)
 importFrom(stats,biplot)
-importFrom(stringr,str_remove)
-importFrom(stringr,str_replace)
-importFrom(stringr,str_replace_all)
-importFrom(stringr,str_to_title)
-importFrom(tidyr,separate_wider_delim)
-importFrom(tidyr,unite)
-importFrom(utils,combn)
-importFrom(utils,globalVariables)
-importFrom(utils,write.csv)
+importFrom(stringr,
+  str_remove,
+  str_replace,
+  str_replace_all,
+  str_to_title
+)
+importFrom(tidyr,
+  separate_wider_delim,
+  unite
+)
+importFrom(utils,
+  combn,
+  globalVariables,
+  write.csv
+)

@@ -31,26 +31,26 @@ as blueprints, create `vignettes/devel_guide` complete with `mermaid` flowchart 
 
 ### Step 1: Root Reference File (`DEVELOPER.md`)
 
-Created [`DEVELOPER.md`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/DEVELOPER.md) in the project root to serve as an in-repo entry point detailing setup commands, the 5-function Shiny module design pattern, parameter scoping, runtime global data objects, explicit package import conventions, and deployment guidelines.
+Created [`DEVELOPER.md`](../../DEVELOPER.md) in the project root to serve as an in-repo entry point detailing setup commands, the 5-function Shiny module design pattern, parameter scoping, runtime global data objects, explicit package import conventions, and deployment guidelines.
 
 ### Step 2: Architectural Analysis & Code Audit
 
 Inspected `R/*.R` source files and package namespace dependencies:
 
-- Fixed missing `bslib` dependency and added `Remotes: byandell/foundr@foundrBase` for GitHub Actions dependency resolution in [`DESCRIPTION`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/DESCRIPTION).
-- Added `stats::biplot` import in [`R/biplotApp.R`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/R/biplotApp.R).
-- Added `globalVariables()` declarations in [`R/foundr_helpers.R`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/R/foundr_helpers.R) to resolve R CMD check warnings for non-standard evaluation variables and global app objects.
+- Fixed missing `bslib` dependency and added `Remotes: byandell/foundr@foundrBase` for GitHub Actions dependency resolution in [`DESCRIPTION`](../../DESCRIPTION).
+- Added `stats::biplot` import in [`R/biplotApp.R`](../../R/biplotApp.R).
+- Added `globalVariables()` declarations in [`R/foundr_helpers.R`](../../R/foundr_helpers.R) to resolve R CMD check warnings for non-standard evaluation variables and global app objects.
 
 ### Step 3: Creation of `vignettes/devel_guide/` Suite & Vignette Setup
 
 Created a 3-part R Markdown article suite under `vignettes/devel_guide/`:
 
-- **[`vignettes/devel_guide/index.Rmd`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/vignettes/devel_guide/index.Rmd)**:
+- **[`vignettes/devel_guide/index.Rmd`](../../vignettes/devel_guide/index.Rmd)**:
   - Master index article providing package purpose, companion package mapping (`foundr`, `foundrHarmony`, `modulr`), local developer quick start commands, and a full visual `mermaid` reactivity flowchart of all ~30 modules.
-- **[`vignettes/devel_guide/modules.Rmd`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/vignettes/devel_guide/modules.Rmd)**:
+- **[`vignettes/devel_guide/modules.Rmd`](../../vignettes/devel_guide/modules.Rmd)**:
   - 5-function Shiny module design pattern documentation and exhaustive 8-category breakdown of all ~30 package modules.
   - Features 5 granular Mermaid flowcharts constructed directly from source module logic (`R/traitApp.R`, `R/contrastApp.R`, `R/timeApp.R`, `R/panelApp.R`, `R/contrastPlotApp.R`) detailing high-level category architecture, infrastructure & parameter tiers, Trait panel data cascade, Contrast panel multi-table dispatcher, and Time panel flow.
-- **[`vignettes/devel_guide/data_flow.Rmd`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/vignettes/devel_guide/data_flow.Rmd)**:
+- **[`vignettes/devel_guide/data_flow.Rmd`](../../vignettes/devel_guide/data_flow.Rmd)**:
   - Details on `foundrSetup()`, global runtime data objects (`traitData`, `traitSignal`, `traitStats`, `traitModule`, `customSettings`), three-tier reactive parameter scoping (`main_par`, `panel_par`, `plot_par`) illustrated with a `mermaid` flowchart, and unit testing with `*App()` test functions.
 - **Obsolete `vignettes/foundrShiny.Rmd` Integration**:
   - Reviewed legacy `vignettes/foundrShiny.Rmd` file moved from `../foundr`.
@@ -58,7 +58,7 @@ Created a 3-part R Markdown article suite under `vignettes/devel_guide/`:
 
 ### Step 4: `_pkgdown.yml` & Navigation Design
 
-Created [`_pkgdown.yml`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/_pkgdown.yml) in package root:
+Created [`_pkgdown.yml`](../../_pkgdown.yml) in package root:
 
 - Configured Bootstrap 5 theme with Mermaid.js CDN script injection in `template.includes.in_header`.
 - Set top navigation dropdown component to `text: Guides` matching `qtl2shiny`.
@@ -67,8 +67,17 @@ Created [`_pkgdown.yml`](file:///Users/brianyandell/Documents/Research/byandell-
 
 ### Step 5: `.Rbuildignore` & `.nojekyll` Setup
 
-- Updated [`.Rbuildignore`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/.Rbuildignore) with anchored regex exclusions (`^_pkgdown\.yml$`, `^\.github$`, `^docs$`).
-- Created [`docs/.nojekyll`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/docs/.nojekyll) to ensure GitHub Pages does not ignore underscore asset folders.
+- Updated [`.Rbuildignore`](../../.Rbuildignore) with anchored regex exclusions (`^_pkgdown\.yml$`, `^\.github$`, `^docs$`).
+- Created [`docs/.nojekyll`](../../docs/.nojekyll) to ensure GitHub Pages does not ignore underscore asset folders.
+
+### Step 6: Application Deployment Documentation (`inst/shinyApp/README.md`)
+
+- Created [`inst/shinyApp/README.md`](../shinyApp/README.md) detailing:
+  - Overview and roles of template scripts (`app.R`, `setup.R`, `TraitData.R`, `appDetail.R`, `intro.md`, `help.md`, `foundrDAG.Rmd`).
+  - Expected data directory (`dirpath`) layout and RDS file naming conventions (`<instance>Data.rds`, `<instance>Signal.rds`, `<instance>Stats.rds`, `traitModule.rds`, `datasets.rds`).
+  - Automated data setup using `foundrShiny::foundrSetup()` vs. manual loading via `setup.R`.
+  - Execution instructions for RStudio, R console (`shiny::runApp("inst/shinyApp")`), and command-line execution (`Rscript`).
+
 
 ---
 
@@ -86,7 +95,7 @@ When `pkgdown::build_site()` runs, it compiles static HTML files into `docs/`:
 To avoid cluttering the `main` branch git history with hundreds of compiled HTML files from `docs/`:
 
 1. **Keep `docs/` in `.gitignore`**: Local `pkgdown::build_site()` builds remain untracked in your local workspace, keeping `main` clean (source files only).
-2. **Automated Deployment via [.github/workflows/pkgdown.yaml](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/.github/workflows/pkgdown.yaml)**:
+2. **Automated Deployment via [.github/workflows/pkgdown.yaml](../../.github/workflows/pkgdown.yaml)**:
    - On every `git push` to `main`, GitHub Actions runs `pkgdown::build_site()` in a cloud container.
    - The workflow step `JamesIves/github-pages-deploy-action@v4` commits the compiled site directly to an isolated, automated **`gh-pages`** branch.
 3. **GitHub Pages Setting**:

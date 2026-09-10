@@ -18,17 +18,22 @@ knitr::opts_chunk$set(
 
 ## Package Purpose & Ecosystem
 
-**foundrShiny** is an R Shiny package providing interactive web applications for analyzing and visualizing multiparent founder study data (such as Attie Lab founder mouse diet and calcium studies). It serves as the modular interactive web companion to the core analytical package [`foundr`](https://github.com/byandell/foundr) (branch `foundrBase`).
+**foundrShiny** is an R Shiny package providing interactive web applications
+for analyzing and visualizing multiparent founder study data
+(such as Attie Lab founder mouse diet and calcium studies). It serves as the modular
+interactive web companion to the core analytical package
+[`foundr`](https://github.com/byandell/foundr).
 
 - **Author:** Brian S Yandell (<brian.yandell@wisc.edu>)
 - **License:** GPL-3
 - **Minimum R Version:** ≥ 4.2.0
 
 Related packages in the ecosystem:
-- **`foundr`**: Core data analysis algorithms, statistical models, and `ggplot2` visualization functions.
-- **`foundrShiny`**: Interactive Shiny module UI wrappers, tab routers, reactive state handlers, and standalone test apps.
-- **`foundrHarmony`**: Data harmonization across multi-tissue study datasets (in development).
-- **`modulr`**: Standardization of WGCNA module objects.
+
+- [**`foundr`**](https://byandell-sysgen.github.io/foundr/): Core data analysis algorithms, statistical models, and `ggplot2` visualization functions.
+- [**`foundrShiny`**](https://byandell-sysgen.github.io/foundrShiny/): Interactive Shiny module UI wrappers, tab routers, reactive state handlers, and standalone test apps.
+- [**`foundrHarmony`**](https://byandell-sysgen.github.io/foundrHarmony/): Data harmonization across multi-tissue study datasets.
+- [**`modulr`**](https://byandell-sysgen.github.io/modulr/): Standardization of WGCNA module objects.
 
 ---
 
@@ -147,23 +152,11 @@ flowchart TD
 
 ## Developer Quick Start
 
-### Local Development Workflow
-
-```r
-# Load local package sources dynamically
-devtools::load_all()
-
-# Re-generate documentation & NAMESPACE
-devtools::document()
-
-# Run R package checks
-devtools::check()
-```
-
 ### Navigating the Guide
 
 For detailed information on individual modules, parameters, and data loading routines, explore the sub-guides:
 
+- **[Developer Guide Summary](../../DEVELOPER.html)**: Summary of package use, components and design decisions.
 - **[Shiny Module Index & Standard Conventions](modules.html)**: Comprehensive listing of all ~30 modules and the standard 5-function Shiny module design pattern.
 - **[Data Pipeline & Parameter Reactivity](data_flow.html)**: Details on `foundrSetup()`, parameter scoping (`main_par`, `panel_par`, `plot_par`), and standalone module test benches.
 - **[Data Preparation & File Structure Guide](data_prep.html)**: Details on raw and harmonized data files in `~/founder_diet_study/{RawData,HarmonizedData}` and file naming conventions.

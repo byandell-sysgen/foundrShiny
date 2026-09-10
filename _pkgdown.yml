@@ -33,6 +33,8 @@ navbar:
     articles:
       text: Guides
       menu:
+        - text: "Developer Guide Summary"
+          href: DEVELOPER.html
         - text: "Developer Guide Overview & Architecture"
           href: articles/devel_guide/index.html
         - text: "  Module Index & Design Conventions"

@@ -5,20 +5,21 @@ Shiny app tools companion package for
 
 ```
 install.packages("devtools")
-devtools::install_github("byandell/foundr", ref = "foundrBase")
+devtools::install_github("byandell/foundr")
 devtools::install_github("byandell/foundrShiny")
 ```
 
-This package can be used to build shiny apps for analysis and visualization of founder data.
-It is part of a (planned) collection of packages. See
+This package has shiny apps for analysis and visualization of founder data.
+It is part of a collection of packages. See
 [Foundr App Developer Guide](https://docs.google.com/presentation/d/171HEopFlSTtf_AbrA28YIAJxJHvkzihB4_lcV6Ct-eI)
-for an overview of package(s) use and components.
+for a (dated) overview of package(s) use and components.
+See
+[foundrShiny vignettes](https://byandell-sysgen.github.io/foundrShiny) for more recent developer notes.
 
-- [foundr](https://github.com/byandell/foundr): data analysis and visualization
-  - See [foundrBase tree of foundr](https://github.com/byandell/foundr/tree/foundrBase) for the revised `foundr` package (in testing phase).
-- [foundrShiny](https://github.com/byandell/foundrShiny): interactive shiny app
-- [foundrHarmony](https://github.com/byandell/foundrHarmony): harmonize data from multiple sources (being written)
-- [modulr](https://github.com/byandell/modulr): harmonize WGCNA module objects
+- [foundr](https://byandell-sysgen.github.io/foundr): data analysis and visualization
+- [foundrShiny](https://byandell-sysgen.github.io/foundrShiny): interactive shiny app
+- [foundrHarmony](https://byandell-sysgen.github.io/foundrHarmony): harmonize data from multiple sources (being written)
+- [modulr](https://byandell-sysgen.github.io/modulr): harmonize WGCNA module objects
 
 ## Improvements Planned
 
@@ -31,6 +32,7 @@ for an overview of package(s) use and components.
 
 ## foundrShiny Modular Organization
 
+(This is now dated.)
 The foundrShiny package is completely organized using
 [Shiny modules](https://mastering-shiny.org/scaling-modules.html).
 All files in the `R` function directory have built-in apps following
@@ -140,29 +142,29 @@ It made sense to allow these to let the user set these separately within each pa
 ```  
 
 Some parameters are passed as lists from one module to another. For instance,
-the `traitTable` module returns a 
+the `traitTable` module returns a
+
 - trait
-  + traitTable: strains
-  + traitSolos: facet
-  + traitPairs: facet
+  - traitTable: strains
+  - traitSolos: facet
+  - traitPairs: facet
 - stats
-  + contrastPlot: sex
+  - contrastPlot: sex
 - time
-  + timePlot: strains, facet
-  + timeTable: strains
-  + timeTraits: contrast (traits)
+  - timePlot: strains, facet
+  - timeTable: strains
+  - timeTraits: contrast (traits)
 - contrast
-  + contrastSex: sex 
-  + contrastTime: contrast, strains
-  + timePlot: strains, facet
-  + contrastGroup: sex, group
-  + contrastPlot: sex, strain (via volcano?)
+  - contrastSex: sex
+  - contrastTime: contrast, strains
+  - timePlot: strains, facet
+  - contrastGroup: sex, group
+  - contrastPlot: sex, strain (via volcano?)
   
 Careful that contrastPlot and its sub-modules
 (volcano,biplot,dotplot)
 us rownames from plotPar, which is substitute for strain.
 Volcano may have wrong call for strain.
-
 
 ## Panel sub-modules
 
@@ -188,21 +190,21 @@ sub-modules.
 ### Time module
 
 - timeTable
-  + traitOrder (reused from trait module)
-  + timeTraits
+  - traitOrder (reused from trait module)
+  - timeTraits
 - timePlot
 
 ### Contrast module
 
 - contrastTable (used three times)
-  + traitOrder (reused from trait module)
+  - traitOrder (reused from trait module)
 - contrastSex
-  + contrastPlot
+  - contrastPlot
 - contrastTime
-  + timeTraits
+  - timeTraits
 - timePlot (reused from time module)
 - contrastGroup
-  + contrastPlot
+  - contrastPlot
 
 ```
 foundrSetup(data_subset = "Physio",

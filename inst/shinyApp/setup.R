@@ -1,8 +1,14 @@
-deploy <- "liver"
-deploydir <- "deployLiverNew"
-deploy <- "trait"
-deploydir <- "deployNew"
-small <- FALSE
+if (!exists("deploy")) {
+  deploy <- "liver"
+}
+if (!exists("deploydir")) {
+  deploydir <- "deployLiverNew"
+}
+#deploy <- "trait"
+#deploydir <- "deployNew"
+if (!exists("small")) {
+  small <- TRUE
+}
 
 dirpath <- file.path("../attie_alan/FounderDietStudy", deploydir)
 traitData <- readRDS(file.path(dirpath, paste0(deploy, "Data.rds")))
@@ -21,13 +27,16 @@ customSettings <- list(
 
 # Small data
 if(small) {
+  datasets_sub <- unique(traitData$dataset)[1:2]
   traitData <- traitData |>
-    dplyr::filter(dataset == dataset[1], trait %in% unique(trait)[1:2])
-  traits <- unique(traitData$trait)
+    dplyr::filter(dataset %in% datasets_sub) |>
+    dplyr::group_by(dataset) |>
+    dplyr::filter(trait %in% unique(trait)[1:2]) |>
+    dplyr::ungroup()
   traitSignal <- traitSignal |>
-    dplyr::filter(dataset == dataset[1], trait %in% traits)
+    dplyr::semi_join(traitData, by = c("dataset", "trait"))
   traitStats <- traitStats |>
-    dplyr::filter(dataset == dataset[1], trait %in% traits)
+    dplyr::semi_join(traitData, by = c("dataset", "trait"))
 }
 
 

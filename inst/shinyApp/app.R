@@ -9,7 +9,7 @@ options(shiny.sanitize.errors = FALSE)
 foundrShiny::foundrSetup(data_instance = "Liver",
                          data_subset = c("Physio","MixMod"),
                          custom_settings = TRUE,
-                         dirpath = "~/Documents/Research/attie_alan/FounderDietStudy/deployLiver/")
+                         dirpath = "~/Documents/Research/byandell-sysgen/attie_alan/FounderDietStudy/deployLiverNew")
 
 title <- "Founder Diet Study"
 

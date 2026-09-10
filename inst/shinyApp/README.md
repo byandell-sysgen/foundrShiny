@@ -1,8 +1,39 @@
 # foundrShiny Deployment Application Directory (`inst/shinyApp/`)
 
-This directory contains standalone deployment files, setup scripts, and Shiny application templates for running and deploying **foundrShiny** applications.
+This directory contains standalone deployment files, setup scripts,
+and Shiny application templates for running and deploying
+**foundrShiny** applications.
 
----
+- [Data Preliminaries](#data-preliminaries)
+- [Directory Overview](#directory-overview)
+- [Setting Up Data for Shiny App](#setting-up-data-for-shiny-app)
+- [How to Run the Shiny App](#how-to-run-the-shiny-app)
+
+## Data Preliminaries
+
+Unless you have already loaded data, you will need to do that
+with one of the scripts,
+for either a minimal subset or the full Liver panel.
+You will need to be on campus or use
+[GlobalProtect VPN](https://uwmadison.vpn.wisc.edu/global-protect/getsoftwarepage.esp).
+
+The processed data for the `foundrShiny` app are in
+`[RD]/adattie/General/founder_diet_study`
+where `[RD]` is `/research.drive.wisc.edu`, which you typically
+mount as `/Volumes` for Linux and MacOS and
+`R:` for Windows.
+
+On MacOS, I find it convenient to have a symbolic link
+in my home directory `~` established with the one-time command
+
+```bash
+ln -s /Volumes/adattie/General/founder_diet_study ~/founder_diet_study
+```
+
+Raw data are in `~/founder_diet_study/RawData` and harmonized data
+are in `~/founder_diet_study/HarmonizedData`.
+These are accessed via the scripts in the folder as input
+to the `foundrShiny` app.
 
 ## Directory Overview
 
@@ -41,21 +72,28 @@ dirpath/
 
 ---
 
-## Setting Up Data and Running `app.R`
+## Setting Up Data for Shiny App
 
-### Option 1: Automated Setup via `foundrSetup()` (Recommended)
+You *must* have key data files loaded into the R workspace *prior* to running `app.R` (or `foundrShinyApp()`).
+These can be loaded via `foundrSetup()` or using the `setup.R` script. See below for details.
+These create five key `R` objects in the global environment:
+
+1. **`traitData`**: Data frame containing raw/normalized trait values, strain, sex, diet, and dataset metadata.
+2. **`traitSignal`**: Data frame of ANOVA / statistical model summaries per trait.
+3. **`traitStats`**: Data frame of pairwise contrasts, effect sizes, and p-values.
+4. **`traitModule`**: (Optional) Data frame mapping traits to co-expression/functional modules.
+5. **`customSettings`**: Named list of app settings (help file path, condition name, group name, dataset lookup table).
+
+### Automated Setup via `foundrSetup()` (Recommended)
 
 In [`app.R`](app.R), configure `foundrSetup()` with your data location and desired data subset:
 
 ```r
 library(foundrShiny)
 
-# 1. Initialize runtime data objects
+# 1. Initialize runtime data objects (with subset of data)
 foundrShiny::foundrSetup(
-  data_instance = "Liver",                                   # Data prefix ("Liver" or "Trait")
-  data_subset   = c("Physio", "MixMod"),                     # Optional: filter specific datasets
-  custom_settings = TRUE,                                    # Load customSettings list
-  dirpath       = "~/Documents/Research/FounderDietStudy"    # Path to directory containing RDS files
+  data_subset   = c("Physio", "MixMod")
 )
 
 # 2. Define application title
@@ -85,27 +123,16 @@ server <- function(input, output, session) {
 shiny::shinyApp(ui, server)
 ```
 
-### Option 2: Manual Data Loading via `setup.R`
+### Manual Data Loading via `setup.R`
 
-If you are running in a custom environment or debugging without `foundrSetup()`, you can source [`setup.R`](setup.R):
+If you are running in a custom environment or debugging without `foundrSetup()`, you can define variables prior to sourcing [`setup.R`](setup.R):
 
 ```r
-dirpath <- "~/Documents/Research/FounderDietStudy"
-deploy <- "liver"
-
-traitData   <- readRDS(file.path(dirpath, paste0(deploy, "Data.rds")))
-traitSignal <- readRDS(file.path(dirpath, paste0(deploy, "Signal.rds")))
-traitStats  <- readRDS(file.path(dirpath, paste0(deploy, "Stats.rds")))
-traitModule <- NULL
-datasets    <- readRDS(file.path(dirpath, "datasets.rds"))
-
-customSettings <- list(
-  help      = "help.md",
-  condition = "diet",
-  group     = "module",
-  dataset   = datasets
-)
+small <- FALSE  # Set to FALSE for full dataset (defaults to TRUE if unset)
+source("inst/shinyApp/setup.R")
 ```
+
+If `small = TRUE`, only the first 2 datasets and the first 2 traits per dataset are included.
 
 ---
 
@@ -127,15 +154,3 @@ Or open [`app.R`](app.R) in RStudio and click **Run App**.
 ```bash
 Rscript -e "shiny::runApp('inst/shinyApp', port = 3838, host = '0.0.0.0')"
 ```
-
----
-
-## Core Objects Loaded into Workspace
-
-When `foundrSetup()` runs, it populates five key objects into the global environment:
-
-1. **`traitData`**: Data frame containing raw/normalized trait values, strain, sex, diet, and dataset metadata.
-2. **`traitSignal`**: Data frame of ANOVA / statistical model summaries per trait.
-3. **`traitStats`**: Data frame of pairwise contrasts, effect sizes, and p-values.
-4. **`traitModule`**: (Optional) Data frame mapping traits to co-expression/functional modules.
-5. **`customSettings`**: Named list of app settings (help file path, condition name, group name, dataset lookup table).

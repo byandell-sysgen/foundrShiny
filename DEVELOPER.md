@@ -11,11 +11,12 @@
 ### Documentation & Guides
 
 - **[Developer Guide & Process Documentation](inst/doc/devel_guide.md)**: Complete record of step-by-step prompts, blueprint references, design decisions, and site build procedures.
-- **[Application Deployment Guide](inst/shinyApp/README.md)**: Instructions for setting up datasets and running `app.R` from `inst/shinyApp/`.
+- **[Application Deployment Guide](inst/shinyApp/)**: Instructions for setting up datasets and running `app.R` from `inst/shinyApp/`.
 - **Package Vignette Suite**:
   - [Master Developer Guide](vignettes/devel_guide/index.Rmd) (`vignettes/devel_guide/index.Rmd`)
   - [Module Categorization & Flowcharts](vignettes/devel_guide/modules.Rmd) (`vignettes/devel_guide/modules.Rmd`)
   - [Data Flow & Three-Tier Parameters](vignettes/devel_guide/data_flow.Rmd) (`vignettes/devel_guide/data_flow.Rmd`)
+  - [Data Preparation](vignettes/data_prep.Rmd) (`vignettes/data_prep.Rmd`)
 
 ---
 
@@ -67,7 +68,7 @@ The package is built entirely with **Shiny Modules** following standard conventi
 Each module defined in `R/*.R` strictly adheres to a standard set of 5 exported functions:
 
 | Function Pattern | Purpose |
-|---|---|
+| --- | --- |
 | `*Input(id)` | Sidebar / input UI component |
 | `*UI(id)` | Parameter control / sub-panel UI |
 | `*Output(id)` | Main display / visualization output UI |
@@ -109,21 +110,27 @@ plot_par  <- plotParServer("plot_par", contrast_table)
 ```
 
 ### 1. Global Parameters (`main_par`)
+
 Managed via [`R/mainParApp.R`](R/mainParApp.R).
+
 - Selected dataset instance
 - Trait ordering method
 - Table vs. plot output toggles
 - Dynamic plot container height
 
 ### 2. Panel-Level Parameters (`panel_par`)
+
 Managed via [`R/panelParApp.R`](R/panelParApp.R).
+
 - Strain / genotype filter selections
 - Sex groupings (`B`oth, `F`emale, `M`ale, `C`ombined)
 - Faceting configurations
 - Table display mode
 
 ### 3. Plot-Specific Parameters (`plot_par`)
+
 Managed via [`R/plotParApp.R`](R/plotParApp.R).
+
 - Volcano plot thresholds (`volsd` for standard deviation cutoff, `volvert` for log-p cutoff)
 - Interaction terms toggles
 - Strain / term row labels
@@ -147,7 +154,7 @@ foundrSetup(
 `foundrSetup()` generates five global objects required by module servers:
 
 | Object | Data Type | Description |
-|---|---|---|
+| --- | --- | --- |
 | `traitData` | `data.frame` / `tibble` | Individual-level raw phenotypic measurements |
 | `traitSignal` | `data.frame` / `tibble` | Cell means and normalized trait values |
 | `traitStats` | `list` / `data.frame` | Model estimates, ANOVA tables, and contrast stats |

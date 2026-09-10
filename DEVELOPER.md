@@ -18,25 +18,27 @@ study data. It serves as the interactive web companion to the
   Documentation](https://byandell-sysgen.github.io/foundrShiny/inst/doc/devel_guide.md)**:
   Complete record of step-by-step prompts, blueprint references, design
   decisions, and site build procedures.
-- **[Application Deployment
-  Guide](https://byandell-sysgen.github.io/foundrShiny/inst/shinyApp/)**:
-  Instructions for setting up datasets and running `app.R` from
-  `inst/shinyApp/`.
+- **[Shiny
+  App](https://github.com/byandell-sysgen/foundrShiny/tree/main/inst/shinyApp)**:
+  Scripts for setting up datasets and running `app.R` from
+  `inst/shinyApp/`. See [Application
+  Deployment](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/deploy.html)
+  (`vignettes/devel_guide/deploy.Rmd`) for details.
 - **Package Vignette Suite**:
   - [Master Developer
-    Guide](https://byandell-sysgen.github.io/foundrShiny/vignettes/devel_guide/index.Rmd)
+    Guide](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/index.html)
     (`vignettes/devel_guide/index.Rmd`)
   - [Module Categorization &
-    Flowcharts](https://byandell-sysgen.github.io/foundrShiny/vignettes/devel_guide/modules.Rmd)
+    Flowcharts](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/modules.html)
     (`vignettes/devel_guide/modules.Rmd`)
   - [Data Flow & Three-Tier
-    Parameters](https://byandell-sysgen.github.io/foundrShiny/vignettes/devel_guide/data_flow.Rmd)
+    Parameters](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/data_flow.html)
     (`vignettes/devel_guide/data_flow.Rmd`)
   - [Data
-    Preparation](https://byandell-sysgen.github.io/foundrShiny/vignettes/devel_guide/data_prep.Rmd)
+    Preparation](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/data_prep.html)
     (`vignettes/devel_guide/data_prep.Rmd`)
   - [Application
-    Deployment](https://byandell-sysgen.github.io/foundrShiny/vignettes/devel_guide/deploy.Rmd)
+    Deployment](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/deploy.html)
     (`vignettes/devel_guide/deploy.Rmd`)
 
 ------------------------------------------------------------------------

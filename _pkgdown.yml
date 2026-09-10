@@ -39,6 +39,8 @@ navbar:
           href: articles/devel_guide/modules.html
         - text: "  Data Pipeline & Parameter Reactivity"
           href: articles/devel_guide/data_flow.html
+        - text: "  Data Preparation & File Structure"
+          href: articles/devel_guide/data_prep.html
 
 articles:
   - title: "Developer Guides"
@@ -46,3 +48,4 @@ articles:
       - "devel_guide/index"
       - "devel_guide/modules"
       - "devel_guide/data_flow"
+      - "devel_guide/data_prep"

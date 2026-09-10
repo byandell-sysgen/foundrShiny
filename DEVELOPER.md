@@ -16,7 +16,7 @@
   - [Master Developer Guide](vignettes/devel_guide/index.Rmd) (`vignettes/devel_guide/index.Rmd`)
   - [Module Categorization & Flowcharts](vignettes/devel_guide/modules.Rmd) (`vignettes/devel_guide/modules.Rmd`)
   - [Data Flow & Three-Tier Parameters](vignettes/devel_guide/data_flow.Rmd) (`vignettes/devel_guide/data_flow.Rmd`)
-  - [Data Preparation](vignettes/data_prep.Rmd) (`vignettes/data_prep.Rmd`)
+  - [Data Preparation](vignettes/devel_guide/data_prep.Rmd) (`vignettes/devel_guide/data_prep.Rmd`)
 
 ---
 

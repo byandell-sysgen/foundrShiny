@@ -8,20 +8,24 @@
 applications for analyzing and visualizing multiparent founder study
 data (such as Attie Lab founder mouse diet and calcium studies). It
 serves as the modular interactive web companion to the core analytical
-package [`foundr`](https://github.com/byandell/foundr) (branch
-`foundrBase`).
+package [`foundr`](https://github.com/byandell/foundr).
 
 - **Author:** Brian S Yandell (<brian.yandell@wisc.edu>)
 - **License:** GPL-3
 - **Minimum R Version:** ≥ 4.2.0
 
-Related packages in the ecosystem: - **`foundr`**: Core data analysis
-algorithms, statistical models, and `ggplot2` visualization functions. -
-**`foundrShiny`**: Interactive Shiny module UI wrappers, tab routers,
-reactive state handlers, and standalone test apps. -
-**`foundrHarmony`**: Data harmonization across multi-tissue study
-datasets (in development). - **`modulr`**: Standardization of WGCNA
-module objects.
+Related packages in the ecosystem:
+
+- [**`foundr`**](https://byandell-sysgen.github.io/foundr/): Core data
+  analysis algorithms, statistical models, and `ggplot2` visualization
+  functions.
+- [**`foundrShiny`**](https://byandell-sysgen.github.io/foundrShiny/):
+  Interactive Shiny module UI wrappers, tab routers, reactive state
+  handlers, and standalone test apps.
+- [**`foundrHarmony`**](https://byandell-sysgen.github.io/foundrHarmony/):
+  Data harmonization across multi-tissue study datasets.
+- [**`modulr`**](https://byandell-sysgen.github.io/modulr/):
+  Standardization of WGCNA module objects.
 
 ------------------------------------------------------------------------
 
@@ -143,25 +147,14 @@ flowchart TD
 
 ### Developer Quick Start
 
-#### Local Development Workflow
-
-``` r
-
-# Load local package sources dynamically
-devtools::load_all()
-
-# Re-generate documentation & NAMESPACE
-devtools::document()
-
-# Run R package checks
-devtools::check()
-```
-
 #### Navigating the Guide
 
 For detailed information on individual modules, parameters, and data
 loading routines, explore the sub-guides:
 
+- **[Developer Guide
+  Summary](https://byandell-sysgen.github.io/foundrShiny/DEVELOPER.md)**:
+  Summary of package use, components and design decisions.
 - **[Shiny Module Index & Standard
   Conventions](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/modules.md)**:
   Comprehensive listing of all ~30 modules and the standard 5-function

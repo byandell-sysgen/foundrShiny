@@ -52,7 +52,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Guides</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-guides">
-<li><a class="dropdown-item" href="../../articles/devel_guide/index.html">Developer Guide Overview &amp; Architecture</a></li>
+<li><a class="dropdown-item" href="../../DEVELOPER.html">Developer Guide Summary</a></li>
+    <li><a class="dropdown-item" href="../../articles/devel_guide/index.html">Developer Guide Overview &amp; Architecture</a></li>
     <li><a class="dropdown-item" href="../../articles/devel_guide/modules.html">  Module Index &amp; Design Conventions</a></li>
     <li><a class="dropdown-item" href="../../articles/devel_guide/data_flow.html">  Data Pipeline &amp; Parameter Reactivity</a></li>
     <li><a class="dropdown-item" href="../../articles/devel_guide/data_prep.html">  Data Preparation &amp; File Structure</a></li>
@@ -95,8 +96,7 @@
 interactive web applications for analyzing and visualizing multiparent
 founder study data (such as Attie Lab founder mouse diet and calcium
 studies). It serves as the modular interactive web companion to the core
-analytical package <a href="https://github.com/byandell/foundr" class="external-link"><code>foundr</code></a>
-(branch <code>foundrBase</code>).</p>
+analytical package <a href="https://github.com/byandell/foundr" class="external-link"><code>foundr</code></a>.</p>
 <ul>
 <li>
 <strong>Author:</strong> Brian S Yandell (<a href="mailto:brian.yandell@wisc.edu" class="email">brian.yandell@wisc.edu</a>)</li>
@@ -105,15 +105,23 @@ analytical package <a href="https://github.com/byandell/foundr" class="external-
 <li>
 <strong>Minimum R Version:</strong> ≥ 4.2.0</li>
 </ul>
-<p>Related packages in the ecosystem: -
-<strong><code>foundr</code></strong>: Core data analysis algorithms,
-statistical models, and <code>ggplot2</code> visualization functions. -
-<strong><code>foundrShiny</code></strong>: Interactive Shiny module UI
-wrappers, tab routers, reactive state handlers, and standalone test
-apps. - <strong><code>foundrHarmony</code></strong>: Data harmonization
-across multi-tissue study datasets (in development). -
-<strong><code>modulr</code></strong>: Standardization of WGCNA module
-objects.</p>
+<p>Related packages in the ecosystem:</p>
+<ul>
+<li>
+<a href="https://byandell-sysgen.github.io/foundr/" class="external-link"><strong><code>foundr</code></strong></a>:
+Core data analysis algorithms, statistical models, and
+<code>ggplot2</code> visualization functions.</li>
+<li>
+<a href="https://byandell-sysgen.github.io/foundrShiny/"><strong><code>foundrShiny</code></strong></a>:
+Interactive Shiny module UI wrappers, tab routers, reactive state
+handlers, and standalone test apps.</li>
+<li>
+<a href="https://byandell-sysgen.github.io/foundrHarmony/" class="external-link"><strong><code>foundrHarmony</code></strong></a>:
+Data harmonization across multi-tissue study datasets.</li>
+<li>
+<a href="https://byandell-sysgen.github.io/modulr/" class="external-link"><strong><code>modulr</code></strong></a>:
+Standardization of WGCNA module objects.</li>
+</ul>
 <hr>
 </div>
 <div class="section level3">
@@ -233,24 +241,15 @@ tiers, and analytical sub-modules.</p>
 <h3 id="developer-quick-start">Developer Quick Start<a class="anchor" aria-label="anchor" href="#developer-quick-start"></a>
 </h3>
 <div class="section level4">
-<h4 id="local-development-workflow">Local Development Workflow<a class="anchor" aria-label="anchor" href="#local-development-workflow"></a>
-</h4>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load local package sources dynamically</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">load_all</span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Re-generate documentation &amp; NAMESPACE</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">document</span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Run R package checks</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level4">
 <h4 id="navigating-the-guide">Navigating the Guide<a class="anchor" aria-label="anchor" href="#navigating-the-guide"></a>
 </h4>
 <p>For detailed information on individual modules, parameters, and data
 loading routines, explore the sub-guides:</p>
 <ul>
+<li>
+<strong><a href="../../DEVELOPER.html">Developer Guide
+Summary</a></strong>: Summary of package use, components and design
+decisions.</li>
 <li>
 <strong><a href="modules.html">Shiny Module Index &amp; Standard
 Conventions</a></strong>: Comprehensive listing of all ~30 modules and

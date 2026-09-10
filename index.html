@@ -54,7 +54,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Guides</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-guides">
-<li><a class="dropdown-item" href="articles/devel_guide/index.html">Developer Guide Overview &amp; Architecture</a></li>
+<li><a class="dropdown-item" href="DEVELOPER.html">Developer Guide Summary</a></li>
+    <li><a class="dropdown-item" href="articles/devel_guide/index.html">Developer Guide Overview &amp; Architecture</a></li>
     <li><a class="dropdown-item" href="articles/devel_guide/modules.html">  Module Index &amp; Design Conventions</a></li>
     <li><a class="dropdown-item" href="articles/devel_guide/data_flow.html">  Data Pipeline &amp; Parameter Reactivity</a></li>
     <li><a class="dropdown-item" href="articles/devel_guide/data_prep.html">  Data Preparation &amp; File Structure</a></li>
@@ -77,22 +78,18 @@
 </h1></div>
 <p>Shiny app tools companion package for <a href="https://github.com/byandell/foundr" class="external-link">foundr</a> package. To install:</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"byandell/foundr"</span>, ref <span class="op">=</span> <span class="st">"foundrBase"</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"byandell/foundr"</span><span class="op">)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"byandell/foundrShiny"</span><span class="op">)</span></span></code></pre>
-<p>This package can be used to build shiny apps for analysis and visualization of founder data. It is part of a (planned) collection of packages. See <a href="https://docs.google.com/presentation/d/171HEopFlSTtf_AbrA28YIAJxJHvkzihB4_lcV6Ct-eI" class="external-link">Foundr App Developer Guide</a> for an overview of package(s) use and components.</p>
+<p>This package has shiny apps for analysis and visualization of founder data. It is part of a collection of packages. See <a href="https://docs.google.com/presentation/d/171HEopFlSTtf_AbrA28YIAJxJHvkzihB4_lcV6Ct-eI" class="external-link">Foundr App Developer Guide</a> for a (dated) overview of package(s) use and components. See <a href="https://byandell-sysgen.github.io/foundrShiny">foundrShiny vignettes</a> for more recent developer notes.</p>
 <ul>
 <li>
-<a href="https://github.com/byandell/foundr" class="external-link">foundr</a>: data analysis and visualization
-<ul>
-<li>See <a href="https://github.com/byandell/foundr/tree/foundrBase" class="external-link">foundrBase tree of foundr</a> for the revised <code>foundr</code> package (in testing phase).</li>
-</ul>
-</li>
+<a href="https://byandell-sysgen.github.io/foundr" class="external-link">foundr</a>: data analysis and visualization</li>
 <li>
-<a href="https://github.com/byandell/foundrShiny" class="external-link">foundrShiny</a>: interactive shiny app</li>
+<a href="https://byandell-sysgen.github.io/foundrShiny">foundrShiny</a>: interactive shiny app</li>
 <li>
-<a href="https://github.com/byandell/foundrHarmony" class="external-link">foundrHarmony</a>: harmonize data from multiple sources (being written)</li>
+<a href="https://byandell-sysgen.github.io/foundrHarmony" class="external-link">foundrHarmony</a>: harmonize data from multiple sources (being written)</li>
 <li>
-<a href="https://github.com/byandell/modulr" class="external-link">modulr</a>: harmonize WGCNA module objects</li>
+<a href="https://byandell-sysgen.github.io/modulr" class="external-link">modulr</a>: harmonize WGCNA module objects</li>
 </ul>
 <div class="section level2">
 <h2 id="improvements-planned">Improvements Planned<a class="anchor" aria-label="anchor" href="#improvements-planned"></a>
@@ -109,7 +106,7 @@
 <div class="section level2">
 <h2 id="foundrshiny-modular-organization">foundrShiny Modular Organization<a class="anchor" aria-label="anchor" href="#foundrshiny-modular-organization"></a>
 </h2>
-<p>The foundrShiny package is completely organized using <a href="https://mastering-shiny.org/scaling-modules.html" class="external-link">Shiny modules</a>. All files in the <code>R</code> function directory have built-in apps following <a href="https://mastering-shiny.org/scaling-modules.html#naming-conventions" class="external-link">shiny module naming conventions</a>. A useful guide is <a href="https://mastering-shiny.org/" class="external-link">Mastering Shiny</a>.</p>
+<p>(This is now dated.) The foundrShiny package is completely organized using <a href="https://mastering-shiny.org/scaling-modules.html" class="external-link">Shiny modules</a>. All files in the <code>R</code> function directory have built-in apps following <a href="https://mastering-shiny.org/scaling-modules.html#naming-conventions" class="external-link">shiny module naming conventions</a>. A useful guide is <a href="https://mastering-shiny.org/" class="external-link">Mastering Shiny</a>.</p>
 <p>The app has a primary module <code>foundr</code> with secondary modules for the tab panels <code>trait</code>, <code>contrast</code>, <code>stats</code>, <code>time</code> and <code>about</code>.</p>
 <ul>
 <li>
@@ -192,7 +189,37 @@ plotParOutput("plot_par"), # rownames (strains/terms)</code></pre>
 <pre><code>  panelParInput("panel_par"), # Strains, Facet
   panelParUI("panel_par"), # Traits
   panelParOutput("panel_par") # Sexes (B/F/M/C)</code></pre>
-<p>Some parameters are passed as lists from one module to another. For instance, the <code>traitTable</code> module returns a - trait + traitTable: strains + traitSolos: facet + traitPairs: facet - stats + contrastPlot: sex - time + timePlot: strains, facet + timeTable: strains + timeTraits: contrast (traits) - contrast + contrastSex: sex + contrastTime: contrast, strains + timePlot: strains, facet + contrastGroup: sex, group + contrastPlot: sex, strain (via volcano?)</p>
+<p>Some parameters are passed as lists from one module to another. For instance, the <code>traitTable</code> module returns a</p>
+<ul>
+<li>trait
+<ul>
+<li>traitTable: strains</li>
+<li>traitSolos: facet</li>
+<li>traitPairs: facet</li>
+</ul>
+</li>
+<li>stats
+<ul>
+<li>contrastPlot: sex</li>
+</ul>
+</li>
+<li>time
+<ul>
+<li>timePlot: strains, facet</li>
+<li>timeTable: strains</li>
+<li>timeTraits: contrast (traits)</li>
+</ul>
+</li>
+<li>contrast
+<ul>
+<li>contrastSex: sex</li>
+<li>contrastTime: contrast, strains</li>
+<li>timePlot: strains, facet</li>
+<li>contrastGroup: sex, group</li>
+<li>contrastPlot: sex, strain (via volcano?)</li>
+</ul>
+</li>
+</ul>
 <p>Careful that contrastPlot and its sub-modules (volcano,biplot,dotplot) us rownames from plotPar, which is substitute for strain. Volcano may have wrong call for strain.</p>
 </div>
 </div>

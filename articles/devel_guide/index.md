@@ -170,3 +170,7 @@ loading routines, explore the sub-guides:
   Details on raw and harmonized data files in
   `~/founder_diet_study/{RawData,HarmonizedData}` and file naming
   conventions.
+- **[Application Deployment
+  Guide](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/deploy.md)**:
+  Instructions for setting up datasets, data preliminaries, and running
+  `app.R` from `inst/shinyApp/`.

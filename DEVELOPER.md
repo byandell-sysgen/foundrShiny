@@ -35,6 +35,9 @@ study data. It serves as the interactive web companion to the
   - [Data
     Preparation](https://byandell-sysgen.github.io/foundrShiny/vignettes/devel_guide/data_prep.Rmd)
     (`vignettes/devel_guide/data_prep.Rmd`)
+  - [Application
+    Deployment](https://byandell-sysgen.github.io/foundrShiny/vignettes/devel_guide/deploy.Rmd)
+    (`vignettes/devel_guide/deploy.Rmd`)
 
 ------------------------------------------------------------------------
 

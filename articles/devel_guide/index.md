@@ -172,3 +172,8 @@ loading routines, explore the sub-guides:
   [`foundrSetup()`](https://byandell-sysgen.github.io/foundrShiny/reference/foundrSetup.md),
   parameter scoping (`main_par`, `panel_par`, `plot_par`), and
   standalone module test benches.
+- **[Data Preparation & File Structure
+  Guide](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/data_prep.md)**:
+  Details on raw and harmonized data files in
+  `~/founder_diet_study/{RawData,HarmonizedData}` and file naming
+  conventions.

@@ -12,6 +12,30 @@ study data. It serves as the interactive web companion to the
 - **License:** GPL-3
 - **Minimum R Version:** ≥ 4.2.0
 
+### Documentation & Guides
+
+- **[Developer Guide & Process
+  Documentation](https://byandell-sysgen.github.io/foundrShiny/inst/doc/devel_guide.md)**:
+  Complete record of step-by-step prompts, blueprint references, design
+  decisions, and site build procedures.
+- **[Application Deployment
+  Guide](https://byandell-sysgen.github.io/foundrShiny/inst/shinyApp/)**:
+  Instructions for setting up datasets and running `app.R` from
+  `inst/shinyApp/`.
+- **Package Vignette Suite**:
+  - [Master Developer
+    Guide](https://byandell-sysgen.github.io/foundrShiny/vignettes/devel_guide/index.Rmd)
+    (`vignettes/devel_guide/index.Rmd`)
+  - [Module Categorization &
+    Flowcharts](https://byandell-sysgen.github.io/foundrShiny/vignettes/devel_guide/modules.Rmd)
+    (`vignettes/devel_guide/modules.Rmd`)
+  - [Data Flow & Three-Tier
+    Parameters](https://byandell-sysgen.github.io/foundrShiny/vignettes/devel_guide/data_flow.Rmd)
+    (`vignettes/devel_guide/data_flow.Rmd`)
+  - [Data
+    Preparation](https://byandell-sysgen.github.io/foundrShiny/vignettes/devel_guide/data_prep.Rmd)
+    (`vignettes/devel_guide/data_prep.Rmd`)
+
 ------------------------------------------------------------------------
 
 ## 1. Development Environment Setup
@@ -115,24 +139,32 @@ plot_par  <- plotParServer("plot_par", contrast_table)
 ### 1. Global Parameters (`main_par`)
 
 Managed via
-[`R/mainParApp.R`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/R/mainParApp.R). -
-Selected dataset instance - Trait ordering method - Table vs. plot
-output toggles - Dynamic plot container height
+[`R/mainParApp.R`](https://byandell-sysgen.github.io/foundrShiny/R/mainParApp.R).
+
+- Selected dataset instance
+- Trait ordering method
+- Table vs. plot output toggles
+- Dynamic plot container height
 
 ### 2. Panel-Level Parameters (`panel_par`)
 
 Managed via
-[`R/panelParApp.R`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/R/panelParApp.R). -
-Strain / genotype filter selections - Sex groupings (`B`oth, `F`emale,
-`M`ale, `C`ombined) - Faceting configurations - Table display mode
+[`R/panelParApp.R`](https://byandell-sysgen.github.io/foundrShiny/R/panelParApp.R).
+
+- Strain / genotype filter selections
+- Sex groupings (`B`oth, `F`emale, `M`ale, `C`ombined)
+- Faceting configurations
+- Table display mode
 
 ### 3. Plot-Specific Parameters (`plot_par`)
 
 Managed via
-[`R/plotParApp.R`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/R/plotParApp.R). -
-Volcano plot thresholds (`volsd` for standard deviation cutoff,
-`volvert` for log-p cutoff) - Interaction terms toggles - Strain / term
-row labels
+[`R/plotParApp.R`](https://byandell-sysgen.github.io/foundrShiny/R/plotParApp.R).
+
+- Volcano plot thresholds (`volsd` for standard deviation cutoff,
+  `volvert` for log-p cutoff)
+- Interaction terms toggles
+- Strain / term row labels
 
 ------------------------------------------------------------------------
 
@@ -198,8 +230,11 @@ traitApp(traitData, traitSignal, customSettings)
 
 Production applications are typically deployed via a single `app.R`
 entry point located in
-[`inst/shinyApp/app.R`](file:///Users/brianyandell/Documents/Research/byandell-sysgen/foundrShiny/inst/shinyApp/app.R)
-or dedicated deployment directories.
+[`inst/shinyApp/app.R`](https://byandell-sysgen.github.io/foundrShiny/inst/shinyApp/app.R)
+or dedicated deployment directories. For complete deployment setup
+instructions, see the
+[`inst/shinyApp/README.md`](https://byandell-sysgen.github.io/foundrShiny/inst/shinyApp/README.md)
+deployment guide.
 
 ### Example `app.R` Structure
 

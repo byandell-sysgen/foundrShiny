@@ -1,0 +1,184 @@
+# Data Preparation and Harmonization Guide
+
+## Data Preparation and Harmonization Guide
+
+This vignette documents the raw and harmonized data files supporting the
+`foundrShiny` package. Data files are hosted in the
+`~/founder_diet_study/` directory (pointing to `HarmonizedData/` and
+`RawData/`), which provide the foundational data structures initialized
+by
+[`foundrSetup()`](https://byandell-sysgen.github.io/foundrShiny/reference/foundrSetup.md).
+
+Note that `~` is the home directory for each system and
+`~/founder_diet_study` is a symbolic link to a folder on the UW shared
+research drive. You will need to be on campus or use [GlobalProtect
+VPN](https://uwmadison.vpn.wisc.edu/global-protect/getsoftwarepage.esp).
+The data for the `foundrShiny` app are in
+`[RD]/adattie/General/founder_diet_study` where `[RD]` is
+`/research.drive.wisc.edu`, which you typically mount as `/Volumes` for
+Linux and MacOS and `R:` for Windows. On MacOS, I find it convenient to
+have a symbolic link in my home directory `~` established with the
+one-time command
+
+``` bash
+ln -s /Volumes/adattie/General/founder_diet_study ~/founder_diet_study
+```
+
+Raw data are in `~/founder_diet_study/RawData` and harmonized data are
+in `~/founder_diet_study/HarmonizedData`. These are accessed via the
+scripts in the folder as input to the `foundrShiny` app. See
+[inst/shinyApp](https://github.com/byandell-sysgen/foundrShiny/blob/main/inst/shinyApp)
+for detailed data setup and use. See
+[shinyHarmony](https://byandell-sysgen.github.io/foundrHarmony/) for
+information on harmonizing data for `foundr` apps.
+
+------------------------------------------------------------------------
+
+### Directory Overview
+
+The dataset directory is structured into two main components:
+
+- **`RawData/`**: Primary data supplied directly by collaborating
+  laboratories (Excel spreadsheets, raw CSV exports, and initial WGCNA
+  run outputs).
+- **`HarmonizedData/`**: Cleaned, standardized `.rds` objects structured
+  specifically for statistical modeling and runtime access within
+  `foundrShiny` applications.
+
+------------------------------------------------------------------------
+
+### 1. Raw Data (`RawData/`)
+
+The `RawData/` folder contains raw experimental measurements and
+metadata organized by assay type.
+
+#### Source Mapping (`source.csv`)
+
+The root `source.csv` file provides a master registry mapping dataset
+short names to their relative file paths and descriptive names:
+
+| Short Name | Relative Address | Description |
+|----|----|----|
+| `annot` | `Annotation/mouse annotations for founder diet study.xlsx` | Mouse sample annotations |
+| `Physio` | `Physio/Final raw and computed in vivo founder data for Mark for correlations.xlsx` | In vivo physiological traits |
+| `PlaMet0` | `PlaMet/15Aug2022_Founder_T0_metabolomics_combined_unique_isobars_removed.xlsx` | Plasma metabolomics (0 min) |
+| `PlaMet120` | `PlaMet/30Mar23_Founder_Plasma_tp120min_metabolomics_combined_unique_isobars_removed.xlsx` | Plasma metabolomics (120 min) |
+| `LivRna` | `LivRna/VSD_transformed_founder_data_Charles/vsd_transfromed_founder_data 2.csv` | Liver RNA-seq gene expression |
+| `LivMet` | `LivMet/01Feb23_Founder_Livers_metabolomics_combined_unique_isobars_removed.xlsx` | Liver metabolomics |
+| `Enrich` | `Enrich/Founder_plasma_timepoints_data_summary_Qiushi_shared.xlsx` | Plasma timepoint enrichment |
+| `Lipid` | `Primary data from Mark/Founder liver lipid raw values from Holland used for mixed module calculation.xlsx` | Liver lipids |
+
+#### Raw Subdirectories
+
+- **`Annotation/`**: Contains mouse subject metadata, diet assignments,
+  sex, and strain annotations.
+- **`Enrich/`**: Plasma 13C/deuterium isotope enrichment time series.
+- **`LivMet/`**: Raw Excel workbooks for liver metabolomics data (with
+  isobar resolution).
+- **`LivRna/`**: Raw RNA-seq VSD-transformed expression files and
+  ENSEMBL annotation mappings (`varianceStabilizingTransformation/`,
+  `normalizedcount.csv`).
+- **`Physio/`**: In vivo physiological measurements (ketones, body
+  weight, glucose tolerance).
+- **`PlaMet/`**: Baseline (0 min) and post-treatment (120 min) plasma
+  metabolomics Excel sheets.
+- **`WGCNA_modules/`**: WGCNA module construction outputs across
+  metabolite and RNA-seq datasets:
+  - `WGCNA_modules_all_metabolites/`: Eigengene
+    (`Module_eigengenes_md4.csv`), membership
+    (`Module_membership_md4.csv`), and R objects
+    (`WGCNA_objects_ms10.Rdata`).
+  - `WGCNA_modules_liverRNA/`: Gene-level
+    (`Gene level quantitation from Colin/`) and Isoform-level
+    (`Isoform level quantitation from Colin/`) module assignments and
+    dendrograms.
+
+------------------------------------------------------------------------
+
+### 2. Harmonized Data (`HarmonizedData/`)
+
+The `HarmonizedData/` directory contains standard `.rds` files generated
+through harmonization pipelines. These files serve as inputs for
+[`foundrSetup()`](https://byandell-sysgen.github.io/foundrShiny/reference/foundrSetup.md).
+
+#### File Naming Conventions (`<Dataset><Type>.rds`)
+
+Each assay domain uses a standardized dataset prefix (`<Dataset>`)
+paired with a standard file suffix (`<Type>.rds`):
+
+    HarmonizedData/
+      ├── <Dataset>/
+      │   ├── <Dataset>Data.rds
+      │   ├── <Dataset>Signal.rds
+      │   ├── <Dataset>Stats.rds
+      │   ├── <Dataset>Module.rds (or <Dataset>Module_<params>.rds)
+      │   └── <Dataset>Object.rds
+
+| Object Type | Suffix Pattern | Data Schema / Description |
+|----|----|----|
+| **Data** | `<Dataset>Data.rds` | Individual mouse observation measurements (`traitData` format: mouse ID, strain, sex, diet, genotype, trait values). |
+| **Signal** | `<Dataset>Signal.rds` | Cell means and normalized strain-diet signal summaries (`traitSignal` format). |
+| **Stats** | `<Dataset>Stats.rds` | Pre-calculated ANOVA statistics, effect estimates, p-values, and contrasts (`traitStats` format). |
+| **Module** | `<Dataset>Module.rds` | WGCNA module assignments, colors, and eigengene correlation structures (`traitModule` format). |
+| **Object** | `<Dataset>Object.rds` | Combined list object wrapping Data, Signal, Stats, and Module into a single runtime payload. |
+
+#### Dataset Prefixes (`<Dataset>`)
+
+- **`Physio`**: In vivo physiological measurements.
+- **`LivMet`**: Liver metabolomics.
+- **`LivRna`**: Liver RNA-seq gene expression.
+- **`PlaMet0`**: Baseline plasma metabolomics.
+- **`PlaMet120`**: 120-minute post-injection plasma metabolomics.
+- **`PlaEnrich`**: Plasma isotope enrichment over time.
+- **`LivEnrich`**: Liver deuterium label enrichment.
+- **`Lipid`**: Liver lipidomics.
+- **`Vivo`**: Primary in vivo trait dataset.
+- **`MixMod` / `Module`**: Mixed module data integrating metabolites and
+  gene expression.
+
+#### Aggregated & Root RDS Files
+
+For multi-domain analysis, root level `.rds` files aggregate datasets
+across modalities:
+
+- **Global Trait Objects**: `traitData.rds`, `traitSignal.rds`,
+  `traitStats.rds`, `traitModule.rds`, `traitObject.rds`
+- **Liver Combined Objects**: `liverData.rds`, `liverSignal.rds`,
+  `liverStats.rds`, `liverTraits.rds`, `liverObject.rds`
+- **Physiology + Mixed Modules**: `PhysMixData.rds`,
+  `PhysMixSignal.rds`, `PhysMixStats.rds`, `PhysMixObject.rds`
+- **Contrasts & Eigengenes**: `traitContrast.rds`, `traitEigen.rds`
+- **Gene Annotation**: `gene_info.csv` (mapping gene symbol, ENSEMBL ID,
+  chromosome, and base pair position).
+
+------------------------------------------------------------------------
+
+### 3. Harmonization Processing Scripts (`HarmonizedData/R/`)
+
+Raw data conversion to harmonized RDS objects is performed by
+specialized R scripts in `HarmonizedData/R/`:
+
+- **`Physio.R`**: Harmonizes raw in vivo physiological spreadsheets.
+- **`LivRna.R`**: Processes VSD-transformed RNA-seq counts and maps
+  ENSEMBL IDs.
+- **`Met.R`**: Harmonizes plasma (`PlaMet0`, `PlaMet120`) and liver
+  (`LivMet`) metabolomics datasets.
+- **`Lipid.R`**: Processes raw liver lipid data.
+- **`LivEnrich.R`**, **`Enrich.R`**, **`Enrich3.R`**: Harmonize isotope
+  enrichment time series.
+
+------------------------------------------------------------------------
+
+### 4. App Initialization & Metadata (`AppSetup/` & `deploy/`)
+
+`foundrShiny` applications load datasets via
+[`foundrSetup()`](https://byandell-sysgen.github.io/foundrShiny/reference/foundrSetup.md).
+Application metadata and setup scripts are maintained in `AppSetup/` and
+`deploy/`:
+
+- **`appSetup.R`**: Configures runtime environment, dataset lists, and
+  custom settings.
+- **`datasets.rds`**: Serialized list defining available dataset names
+  and paths for selection menus.
+- **`help.Rmd` / `help.md`**: Embedded documentation rendered within the
+  Shiny application user interface.

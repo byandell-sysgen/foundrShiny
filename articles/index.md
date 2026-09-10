@@ -8,3 +8,5 @@
   Conventions](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/modules.md):
 - [Data Pipeline, Parameter Reactivity & Isolated
   Testing](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/data_flow.md):
+- [Data Preparation and Harmonization
+  Guide](https://byandell-sysgen.github.io/foundrShiny/articles/devel_guide/data_prep.md):

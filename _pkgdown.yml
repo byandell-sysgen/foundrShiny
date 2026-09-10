@@ -43,6 +43,8 @@ navbar:
           href: articles/devel_guide/data_flow.html
         - text: "  Data Preparation & File Structure"
           href: articles/devel_guide/data_prep.html
+        - text: "  Application Deployment Guide"
+          href: articles/devel_guide/deploy.html
 
 articles:
   - title: "Developer Guides"
@@ -51,3 +53,4 @@ articles:
       - "devel_guide/modules"
       - "devel_guide/data_flow"
       - "devel_guide/data_prep"
+      - "devel_guide/deploy"

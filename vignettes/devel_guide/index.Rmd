@@ -160,3 +160,4 @@ For detailed information on individual modules, parameters, and data loading rou
 - **[Shiny Module Index & Standard Conventions](modules.html)**: Comprehensive listing of all ~30 modules and the standard 5-function Shiny module design pattern.
 - **[Data Pipeline & Parameter Reactivity](data_flow.html)**: Details on `foundrSetup()`, parameter scoping (`main_par`, `panel_par`, `plot_par`), and standalone module test benches.
 - **[Data Preparation & File Structure Guide](data_prep.html)**: Details on raw and harmonized data files in `~/founder_diet_study/{RawData,HarmonizedData}` and file naming conventions.
+- **[Application Deployment Guide](deploy.html)**: Instructions for setting up datasets, data preliminaries, and running `app.R` from `inst/shinyApp/`.
